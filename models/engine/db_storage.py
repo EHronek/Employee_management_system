@@ -143,7 +143,16 @@ class DBStorage:
     def count(self, cls=None):
         """Count of how many instancex of a class"""
         return len(self.all(cls))
+    
+    def find(self, cls=None, username=None):
+        """Finds a user in the db and returns a bolean"""
+        if cls is not None or username is not None:
+            all_classes = self.all(cls).values()
 
+            for user in all_classes:
+                if user.username == username:
+                    return True
+            return False
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
