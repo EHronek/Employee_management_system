@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payroll Management</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- For charts -->
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#">Payroll Dashboard</a></li>
+        <li><a href="#">Salary Management</a></li>
+        <li><a href="#">Payslip Generation</a></li>
+        <li><a href="#">Deductions & Bonuses</a></li>
+        <li><a href="#">Payroll Reports</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <!-- Payroll Dashboard -->
+      <section class="payroll-dashboard">
+        <h1>Payroll Dashboard</h1>
+        <div class="stats">
+          <div class="stat-card">
+            <h3>Total Salaries Paid</h3>
+            <p>$150,000</p>
+          </div>
+          <div class="stat-card">
+            <h3>Pending Payments</h3>
+            <p>$25,000</p>
+          </div>
+          <div class="stat-card">
+            <h3>Tax Deductions</h3>
+            <p>$30,000</p>
+          </div>
+          <div class="stat-card">
+            <h3>Benefits</h3>
+            <p>$10,000</p>
+          </div>
+        </div>
+        <div class="chart">
+          <canvas id="salaryChart"></canvas>
+        </div>
+        <div class="recent-transactions">
+          <h2>Recent Transactions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>John Doe</td>
+                <td>$5,000</td>
+                <td class="status-paid">Paid</td>
+                <td>2023-10-01</td>
+              </tr>
+              <tr>
+                <td>Jane Smith</td>
+                <td>$4,500</td>
+                <td class="status-pending">Pending</td>
+                <td>2023-10-01</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button id="processPayrollBtn">Process Payroll</button>
+      </section>
+
+      <!-- Salary Management -->
+      <section class="salary-management hidden">
+        <h2>Salary Management</h2>
+        <div class="search-filter">
+          <input type="text" id="searchEmployee" placeholder="Search by name or ID">
+          <select id="filterDepartment">
+            <option value="">All Departments</option>
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Finance">Finance</option>
+          </select>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Position</th>
+              <th>Department</th>
+              <th>Salary</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>Software Engineer</td>
+              <td>IT</td>
+              <td>$5,000</td>
+              <td class="status-paid">Paid</td>
+              <td>
+                <button class="editBtn">Edit</button>
+                <button class="markPaidBtn">Mark as Paid</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>HR Manager</td>
+              <td>HR</td>
+              <td>$4,500</td>
+              <td class="status-pending">Pending</td>
+              <td>
+                <button class="editBtn">Edit</button>
+                <button class="markPaidBtn">Mark as Paid</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Payslip Generation -->
+      <section class="payslip-generation hidden">
+        <h2>Payslip Generation</h2>
+        <div class="payslip">
+          <h3>Payslip for John Doe</h3>
+          <p><strong>Employee ID:</strong> EMP12345</p>
+          <p><strong>Position:</strong> Software Engineer</p>
+          <p><strong>Department:</strong> IT</p>
+          <p><strong>Payment Period:</strong> October 2023</p>
+          <hr>
+          <p><strong>Basic Salary:</strong> $4,000</p>
+          <p><strong>Bonuses:</strong> $1,000</p>
+          <p><strong>Deductions:</strong> $500</p>
+          <p><strong>Net Pay:</strong> $4,500</p>
+          <button class="downloadBtn">Download PDF</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script >
+    // Chart for Payroll Dashboard
+const ctx = document.getElementById('salaryChart').getContext('2d');
+const salaryChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [{
+      label: 'Salary Distribution',
+      data: [12000, 15000, 13000, 14000, 16000, 17000],
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+// Toggle Sections
+document.querySelectorAll('.sidebar ul li a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelectorAll('.content section').forEach(section => {
+      section.classList.add('hidden');
+    });
+    const target = link.textContent.replace(/\s+/g, '-').toLowerCase();
+    document.querySelector(`.${target}`).classList.remove('hidden');
+  });
+});
+  </script>
+</body>
+</html>

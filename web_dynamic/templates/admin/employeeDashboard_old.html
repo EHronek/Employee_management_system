@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard | WorkFlow Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: #1e293b;
+            color: white;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #334155;
+        }
+
+        .nav-links a.active {
+            background: #2563eb;
+        }
+
+        .nav-links a i {
+            margin-right: 0.75rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        /* Employee Overview Section */
+        .overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .overview-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .overview-card h3 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-card p {
+            color: #64748b;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .quick-actions button {
+            background: #2563eb;
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .quick-actions button:hover {
+            background: #1e40af;
+        }
+
+        /* Data Visualization */
+        .data-visualization {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        /* Notifications & Alerts */
+        .notifications {
+            margin-bottom: 3rem;
+        }
+
+        .notifications h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .notification-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .notification-card p {
+            color: #1e293b;
+        }
+
+        .notification-card .time {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        /* Recent Activities */
+        .recent-activities {
+            margin-bottom: 3rem;
+        }
+
+        .recent-activities h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .activity-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .activity-card p {
+            color: #1e293b;
+        }
+
+        .activity-card .time {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        /* Search & Filter */
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .search-filter button {
+            padding: 0.75rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-filter button:hover {
+            background: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">WorkFlow Pro</div>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="#" class="active"><i class="fas fa-building"></i>Department</a>
+            <a href="#"><i class="fas fa-user-tag"></i>Roles</a>
+            <a href="#"><i class="fas fa-users"></i>Employees</a>
+            <a href="#"><i class="fas fa-user-circle"></i>My Account</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Employee Dashboard</h1>
+            <div class="user-profile">
+                <img src="admin-avatar.jpg" alt="Admin Avatar">
+                <span>John Doe</span>
+            </div>
+        </div>
+
+        <!-- Employee Overview -->
+        <div class="overview">
+            <div class="overview-card">
+                <h3>1,250</h3>
+                <p>Total Employees</p>
+            </div>
+            <div class="overview-card">
+                <h3>1,200</h3>
+                <p>Active Employees</p>
+            </div>
+            <div class="overview-card">
+                <h3>50</h3>
+                <p>On Leave</p>
+            </div>
+            <div class="overview-card">
+                <h3>12</h3>
+                <p>Pending Approvals</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button><i class="fas fa-plus"></i>Add New Employee</button>
+            <button><i class="fas fa-edit"></i>Edit Employee</button>
+            <button><i class="fas fa-eye"></i>View Employees</button>
+            <button><i class="fas fa-file-download"></i>Generate Reports</button>
+            <button><i class="fas fa-cogs"></i>Manage Roles & Departments</button>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="data-visualization">
+            <div class="chart-container">
+                <h2>Employee Distribution by Department</h2>
+                <canvas id="departmentPieChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Employee Count Over Time</h2>
+                <canvas id="employeeBarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Notifications & Alerts -->
+        <div class="notifications">
+            <h2>Notifications</h2>
+            <div class="notification-card">
+                <p>Upcoming Performance Reviews</p>
+                <p class="time">2 days ago</p>
+            </div>
+            <div class="notification-card">
+                <p>Pending Payroll Processing</p>
+                <p class="time">1 day ago</p>
+            </div>
+            <div class="notification-card">
+                <p>Employee Contract Expiry Reminders</p>
+                <p class="time">5 hours ago</p>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="recent-activities">
+            <h2>Recent Activities</h2>
+            <div class="activity-card">
+                <p>New Employee Registration: John Doe</p>
+                <p class="time">3 hours ago</p>
+            </div>
+            <div class="activity-card">
+                <p>Salary Updated for Jane Smith</p>
+                <p class="time">1 day ago</p>
+            </div>
+            <div class="activity-card">
+                <p>Performance Review Feedback Submitted</p>
+                <p class="time">2 days ago</p>
+            </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="search-filter">
+            <input type="text" placeholder="Search employees...">
+            <select>
+                <option value="">Filter by Status</option>
+                <option value="active">Active</option>
+                <option value="on-leave">On Leave</option>
+            </select>
+            <select>
+                <option value="">Filter by Department</option>
+                <option value="hr">HR</option>
+                <option value="it">IT</option>
+            </select>
+            <button>Search</button>
+        </div>
+    </div>
+
+    <!-- <script>
+        // Chart.js for Employee Distribution by Department
+        const departmentPieChart = new Chart(document.getElementById('departmentPieChart'), {
+            type: 'pie',
+            data: {
+                labels: ['HR', 'IT', 'Finance', 'Marketing', 'Operations'],
+                datasets: [{
+                    data: [120, 85, 60, 45, 80],
+                    backgroundColor: ['#2563eb', '#4f46e5', '#9333ea', '#db2777', '#f59e0b'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+
+        // Chart.js for Employee Count Over Time
+        const employeeBarChart = new Chart(document.getElementById('employeeBarChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'Employee Count',
+                    data: [1000, 1050, 1100, 1150, 1200],
+                    backgroundColor: '#2563eb',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script> -->
+    <script>
+        window.onload = function () {
+            // Chart.js for Employee Distribution by Department
+            const departmentPieChartCtx = document.getElementById('departmentPieChart').getContext('2d');
+            new Chart(departmentPieChartCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['HR', 'IT', 'Finance', 'Marketing', 'Operations'],
+                    datasets: [{
+                        data: [120, 85, 60, 45, 80],
+                        backgroundColor: ['#2563eb', '#4f46e5', '#9333ea', '#db2777', '#f59e0b'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                }
+            });
+    
+            // Chart.js for Employee Count Over Time
+            const employeeBarChartCtx = document.getElementById('employeeBarChart').getContext('2d');
+            new Chart(employeeBarChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [{
+                        label: 'Employee Count',
+                        data: [1000, 1050, 1100, 1150, 1200],
+                        backgroundColor: '#2563eb',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+    
+</body>
+</html>

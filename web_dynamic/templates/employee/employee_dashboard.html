@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard | WorkFlow Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: #1e293b;
+            color: white;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #334155;
+        }
+
+        .nav-links a.active {
+            background: #2563eb;
+        }
+
+        .nav-links a i {
+            margin-right: 0.75rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+        }
+
+        .employee-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .employee-profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .employee-profile .details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .employee-profile .details h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+        }
+
+        .employee-profile .details p {
+            color: #64748b;
+        }
+
+        /* Overview Cards */
+        .overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .overview-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .overview-card h3 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-card p {
+            color: #64748b;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .quick-actions button {
+            background: #2563eb;
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .quick-actions button:hover {
+            background: #1e40af;
+        }
+
+        /* Data Visualization */
+        .data-visualization {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        /* Recent Notifications */
+        .notifications {
+            margin-bottom: 3rem;
+        }
+
+        .notifications h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .notification-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .notification-card p {
+            color: #1e293b;
+        }
+
+        .notification-card .time {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">WorkFlow Pro</div>
+        <div class="nav-links">
+            <a href="#" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="#"><i class="fas fa-calendar-check"></i>Attendance</a>
+            <a href="#"><i class="fas fa-calendar-times"></i>Leave Requests</a>
+            <a href="#"><i class="fas fa-money-bill"></i>Payroll</a>
+            <a href="#"><i class="fas fa-star"></i>Performance Reviews</a>
+            <a href="#"><i class="fas fa-graduation-cap"></i>Training & Development</a>
+            <a href="#"><i class="fas fa-bullhorn"></i>Company Announcements</a>
+            <a href="#"><i class="fas fa-user-circle"></i>Profile & Settings</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Employee Dashboard</h1>
+        </div>
+
+        <!-- Employee Profile -->
+        <div class="employee-profile">
+            <img src="employee-avatar.jpg" alt="Employee Avatar">
+            <div class="details">
+                <h2>John Doe</h2>
+                <p>Manager | HR Department</p>
+                <p>Status: <span class="status-active">Active</span></p>
+            </div>
+        </div>
+
+        <!-- Overview Cards -->
+        <div class="overview">
+            <div class="overview-card">
+                <h3>120</h3>
+                <p>Total Hours Worked</p>
+            </div>
+            <div class="overview-card">
+                <h3>15</h3>
+                <p>Leave Days Remaining</p>
+            </div>
+            <div class="overview-card">
+                <h3>$7,500</h3>
+                <p>Last Salary Payment</p>
+            </div>
+            <div class="overview-card">
+                <h3>4.5/5</h3>
+                <p>Performance Rating</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button><i class="fas fa-clock"></i>Check In/Out</button>
+            <button><i class="fas fa-calendar-plus"></i>Request Leave</button>
+            <button><i class="fas fa-file-invoice"></i>View Payslip</button>
+            <button><i class="fas fa-user-edit"></i>Update Profile</button>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="data-visualization">
+            <div class="chart-container">
+                <h2>Attendance Trends</h2>
+                <canvas id="attendanceLineChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Performance Metrics</h2>
+                <canvas id="performanceBarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Notifications -->
+        <div class="notifications">
+            <h2>Recent Notifications</h2>
+            <div class="notification-card">
+                <p>New Company Announcement: Annual Review Meeting</p>
+                <p class="time">2 hours ago</p>
+            </div>
+            <div class="notification-card">
+                <p>Leave Request Approved: 3 Days (Dec 15 - Dec 17)</p>
+                <p class="time">1 day ago</p>
+            </div>
+            <div class="notification-card">
+                <p>Performance Review Feedback Submitted</p>
+                <p class="time">3 days ago</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js for Attendance Trends
+        const attendanceLineChart = new Chart(document.getElementById('attendanceLineChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Hours Worked',
+                    data: [160, 150, 170, 165, 180, 175],
+                    borderColor: '#2563eb',
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 200, // Set a fixed maximum value for the y-axis
+                        ticks: {
+                            stepSize: 25, // Set step size for y-axis ticks
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart.js for Performance Metrics
+        const performanceBarChart = new Chart(document.getElementById('performanceBarChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Communication', 'Teamwork', 'Productivity', 'Leadership'],
+                datasets: [{
+                    label: 'Performance Rating',
+                    data: [4.5, 4.0, 4.7, 4.2],
+                    backgroundColor: '#2563eb',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5, // Set a fixed maximum value for the y-axis
+                        ticks: {
+                            stepSize: 1, // Set step size for y-axis ticks
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

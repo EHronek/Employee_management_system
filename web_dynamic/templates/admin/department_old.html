@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Management | WorkFlow Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: #1e293b;
+            color: white;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #334155;
+        }
+
+        .nav-links a.active {
+            background: #2563eb;
+        }
+
+        .nav-links a i {
+            margin-right: 0.75rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        /* Search & Filter Section */
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .search-filter button {
+            padding: 0.75rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-filter button:hover {
+            background: #1e40af;
+        }
+
+        /* Department Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .card-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .card-actions button.edit {
+            background: #2563eb;
+            color: white;
+        }
+
+        .card-actions button.delete {
+            background: #dc2626;
+            color: white;
+        }
+
+        /* Analytics Section */
+        .analytics {
+            margin-top: 3rem;
+        }
+
+        .analytics h2 {
+            font-size: 1.75rem;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">WorkFlow Pro</div>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="#" class="active"><i class="fas fa-building"></i>Department</a>
+            <a href="#"><i class="fas fa-user-tag"></i>Roles</a>
+            <a href="#"><i class="fas fa-users"></i>Employees</a>
+            <a href="#"><i class="fas fa-user-circle"></i>My Account</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Department Management</h1>
+            <div class="user-profile">
+                <img src="admin-avatar.jpg" alt="Admin Avatar">
+                <span>John Doe</span>
+            </div>
+        </div>
+
+        <!-- Search & Filter Section -->
+        <div class="search-filter">
+            <input type="text" placeholder="Search departments...">
+            <select>
+                <option value="">Filter by Manager</option>
+                <option value="manager1">Manager 1</option>
+                <option value="manager2">Manager 2</option>
+            </select>
+            <select>
+                <option value="">Filter by Budget</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <button>Search</button>
+        </div>
+
+        <!-- Department Cards -->
+        <div class="cards">
+            <div class="card">
+                <h3>HR Department</h3>
+                <p><strong>Manager:</strong> Jane Doe</p>
+                <p><strong>Budget:</strong> $500,000</p>
+                <p><strong>Employees:</strong> 120</p>
+                <div class="card-actions">
+                    <button class="edit">Edit</button>
+                    <button class="delete">Delete</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>IT Department</h3>
+                <p><strong>Manager:</strong> John Smith</p>
+                <p><strong>Budget:</strong> $750,000</p>
+                <p><strong>Employees:</strong> 85</p>
+                <div class="card-actions">
+                    <button class="edit">Edit</button>
+                    <button class="delete">Delete</button>
+                </div>
+            </div>
+            <!-- Add more department cards here -->
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="analytics">
+            <h2>Department Analytics</h2>
+            <div class="chart-container">
+                <canvas id="departmentChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Chart.js for Department Analytics
+        const ctx = document.getElementById('departmentChart').getContext('2d');
+        const departmentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['HR', 'IT', 'Finance', 'Marketing', 'Operations'],
+                datasets: [{
+                    label: 'Budget Allocation',
+                    data: [500000, 750000, 600000, 450000, 800000],
+                    backgroundColor: '#2563eb',
+                    borderColor: '#1e40af',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

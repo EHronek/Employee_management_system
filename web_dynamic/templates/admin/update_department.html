@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Department | WorkFlow Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: #1e293b;
+            color: white;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #334155;
+        }
+
+        .nav-links a.active {
+            background: #2563eb;
+        }
+
+        .nav-links a i {
+            margin-right: 0.75rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile span {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.invalid input,
+        .form-group.invalid textarea,
+        .form-group.invalid select {
+            border-color: #dc2626;
+        }
+
+        .form-group.invalid .error-message {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-actions button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-actions button[type="submit"] {
+            background: #2563eb;
+            color: white;
+        }
+
+        .form-actions button[type="submit"]:hover {
+            background: #1e40af;
+        }
+
+        .form-actions button[type="reset"] {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .form-actions button[type="reset"]:hover {
+            background: #cbd5e1;
+        }
+
+        .loading-indicator {
+            display: none;
+            margin-left: 0.5rem;
+        }
+
+        .loading-indicator.active {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">WorkFlow Pro</div>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="#" class="active"><i class="fas fa-building"></i>Department</a>
+            <a href="#"><i class="fas fa-user-tag"></i>Roles</a>
+            <a href="#"><i class="fas fa-users"></i>Employees</a>
+            <a href="#"><i class="fas fa-user-circle"></i>My Account</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Edit Department</h1>
+            <div class="user-profile">
+                <img src="admin-avatar.jpg" alt="Admin Avatar">
+                <span>John Doe</span>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form id="editDepartmentForm">
+                <!-- Department Name -->
+                <div class="form-group">
+                    <label for="departmentName">Department Name</label>
+                    <input type="text" id="departmentName" name="departmentName" placeholder="Enter department name" required maxlength="128" value="HR Department">
+                    <div class="error-message">Department name must be unique and less than 128 characters.</div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" placeholder="Enter department description" maxlength="256">Handles all HR-related activities.</textarea>
+                </div>
+
+                <!-- Department Manager -->
+                <div class="form-group">
+                    <label for="departmentManager">Department Manager</label>
+                    <select id="departmentManager" name="departmentManager" class="searchable-dropdown">
+                        <option value="">Select a manager</option>
+                        <option value="1" selected>Jane Doe</option>
+                        <option value="2">John Smith</option>
+                        <option value="3">Alice Johnson</option>
+                    </select>
+                </div>
+
+                <!-- Budget Allocation -->
+                <div class="form-group">
+                    <label for="budget">Budget Allocation</label>
+                    <input type="number" id="budget" name="budget" placeholder="Enter budget" min="0" value="500000">
+                </div>
+
+                <!-- Total Employees -->
+                <div class="form-group">
+                    <label for="totalEmployees">Total Employees</label>
+                    <input type="number" id="totalEmployees" name="totalEmployees" value="120" readonly>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit">
+                        <span>Update Department</span>
+                        <span class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></span>
+                    </button>
+                    <button type="reset">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        // Initialize Select2 for searchable dropdown
+        $(document).ready(function () {
+            $('.searchable-dropdown').select2({
+                placeholder: "Select a manager",
+                allowClear: true
+            });
+        });
+
+        // Form Validation
+        const form = document.getElementById('editDepartmentForm');
+        const departmentNameInput = document.getElementById('departmentName');
+        const errorMessage = document.querySelector('.error-message');
+
+        departmentNameInput.addEventListener('input', () => {
+            if (departmentNameInput.value.length > 128) {
+                departmentNameInput.parentElement.classList.add('invalid');
+            } else {
+                departmentNameInput.parentElement.classList.remove('invalid');
+            }
+        });
+
+        // Form Submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Show loading indicator
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.querySelector('.loading-indicator').classList.add('active');
+
+            // Simulate form submission (replace with actual API call)
+            setTimeout(() => {
+                alert('Department updated successfully!');
+                submitButton.disabled = false;
+                submitButton.querySelector('.loading-indicator').classList.remove('active');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

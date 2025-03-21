@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 import bcrypt
 import models
-from sqlalchemy import Column, String, ForeignKey, DateTime, Integer
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 

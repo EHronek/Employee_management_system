@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training & Development | WorkFlow Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: #1e293b;
+            color: white;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #334155;
+        }
+
+        .nav-links a.active {
+            background: #2563eb;
+        }
+
+        .nav-links a i {
+            margin-right: 0.75rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+        }
+
+        /* Available Training Programs */
+        .training-programs {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .training-programs h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .training-card {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .training-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .training-card h3 {
+            font-size: 1.25rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .training-card p {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        .training-card button {
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .training-card button:hover {
+            background: #1e40af;
+        }
+
+        /* My Enrolled Courses */
+        .enrolled-courses {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .enrolled-courses h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .course-card {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .course-card h3 {
+            font-size: 1.25rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-card .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .course-card .progress-bar .progress {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 5px;
+            width: 60%; /* Example progress */
+        }
+
+        .course-card button {
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .course-card button:hover {
+            background: #1e40af;
+        }
+
+        /* Training Calendar */
+        .training-calendar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .training-calendar h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .calendar {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        /* Certification Records */
+        .certification-records {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .certification-records h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .certification-card {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .certification-card h3 {
+            font-size: 1.25rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .certification-card button {
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .certification-card button:hover {
+            background: #1e40af;
+        }
+
+        /* Search & Filters */
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-filters input,
+        .search-filters select {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .search-filters button {
+            padding: 0.75rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-filters button:hover {
+            background: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">WorkFlow Pro</div>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="#"><i class="fas fa-calendar-check"></i>Attendance</a>
+            <a href="#"><i class="fas fa-calendar-times"></i>Leave Requests</a>
+            <a href="#"><i class="fas fa-money-bill"></i>Payroll</a>
+            <a href="#"><i class="fas fa-star"></i>Performance Reviews</a>
+            <a href="#" class="active"><i class="fas fa-graduation-cap"></i>Training & Development</a>
+            <a href="#"><i class="fas fa-bullhorn"></i>Company Announcements</a>
+            <a href="#"><i class="fas fa-user-circle"></i>Profile & Settings</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Training & Development</h1>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="search-filters">
+            <input type="text" placeholder="Search courses...">
+            <select>
+                <option value="">Filter by Category</option>
+                <option value="technical">Technical</option>
+                <option value="leadership">Leadership</option>
+                <option value="compliance">Compliance</option>
+            </select>
+            <select>
+                <option value="">Filter by Duration</option>
+                <option value="short">Short Courses</option>
+                <option value="long">Long-Term Training</option>
+            </select>
+            <button>Search</button>
+        </div>
+
+        <!-- Available Training Programs -->
+        <div class="training-programs">
+            <h2>Available Training Programs</h2>
+            <div class="training-grid">
+                <div class="training-card">
+                    <h3>Introduction to Leadership</h3>
+                    <p>Learn the fundamentals of effective leadership.</p>
+                    <p><strong>Instructor:</strong> John Doe</p>
+                    <p><strong>Duration:</strong> 4 weeks</p>
+                    <button>Enroll Now</button>
+                </div>
+                <div class="training-card">
+                    <h3>Advanced JavaScript</h3>
+                    <p>Master advanced JavaScript concepts and frameworks.</p>
+                    <p><strong>Instructor:</strong> Jane Smith</p>
+                    <p><strong>Duration:</strong> 6 weeks</p>
+                    <button>Enroll Now</button>
+                </div>
+                <div class="training-card">
+                    <h3>Compliance Training</h3>
+                    <p>Understand company policies and legal requirements.</p>
+                    <p><strong>Instructor:</strong> HR Team</p>
+                    <p><strong>Duration:</strong> 2 weeks</p>
+                    <button>Enroll Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Enrolled Courses -->
+        <div class="enrolled-courses">
+            <h2>My Enrolled Courses</h2>
+            <div class="course-card">
+                <h3>Introduction to Leadership</h3>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <p>60% completed</p>
+                <button>Resume Training</button>
+            </div>
+            <div class="course-card">
+                <h3>Advanced JavaScript</h3>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 30%;"></div>
+                </div>
+                <p>30% completed</p>
+                <button>Resume Training</button>
+            </div>
+        </div>
+
+        <!-- Training Calendar -->
+        <div class="training-calendar">
+            <h2>Training Calendar</h2>
+            <div class="calendar">
+                <!-- Calendar content goes here -->
+                <p>Upcoming Training Sessions:</p>
+                <ul>
+                    <li>Oct 25: Leadership Workshop</li>
+                    <li>Oct 30: JavaScript Masterclass</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Certification Records -->
+        <div class="certification-records">
+            <h2>Certification Records</h2>
+            <div class="certification-card">
+                <h3>Introduction to Leadership</h3>
+                <p>Completed on Oct 15, 2023</p>
+                <button>Download Certificate</button>
+            </div>
+            <div class="certification-card">
+                <h3>Compliance Training</h3>
+                <p>Completed on Sep 30, 2023</p>
+                <button>Download Certificate</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
