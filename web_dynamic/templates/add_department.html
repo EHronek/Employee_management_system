@@ -1,0 +1,62 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Add Department {% endblock %}
+{% block header %} Add New Department{% endblock%}
+{% block content %}
+   <!-- Main Content -->
+   <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+        <h1>New Department</h1>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <form id="newDepartmentForm">
+            <!-- Department Name -->
+            <div class="form-group">
+                <label for="departmentName">Department Name</label>
+                <input type="text" id="departmentName" name="departmentName" placeholder="Enter department name" required maxlength="128">
+                <div class="error-message">Department name must be unique and less than 128 characters.</div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Enter department description" maxlength="256"></textarea>
+            </div>
+
+            <!-- Department Manager -->
+            <div class="form-group">
+                <label for="departmentManager">Department Manager</label>
+                <select id="departmentManager" name="departmentManager" class="searchable-dropdown">
+                    <option value="">Select a manager</option>
+                    <option value="1">Jane Doe</option>
+                    <option value="2">John Smith</option>
+                    <option value="3">Alice Johnson</option>
+                </select>
+            </div>
+
+            <!-- Budget Allocation -->
+            <div class="form-group">
+                <label for="budget">Budget Allocation</label>
+                <input type="number" id="budget" name="budget" placeholder="Enter budget" min="0">
+            </div>
+
+            <!-- Total Employees -->
+            <div class="form-group">
+                <label for="totalEmployees">Total Employees</label>
+                <input type="number" id="totalEmployees" name="totalEmployees" value="0" readonly>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit">
+                    <span>Submit</span>
+                    <span class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+                <button type="reset">Reset</button>
+            </div>
+        </form>
+    </div>
+    <script src="{{url_for('static', filename='scripts/add_department.js')}}"></script>
+{% endblock %}

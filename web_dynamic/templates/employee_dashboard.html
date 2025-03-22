@@ -1,0 +1,103 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Edit Employee {% endblock %}
+{% block header %}Employee Dashboard | EMS{% endblock%}
+{% block content %}
+<body>
+    
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+
+        <!-- Employee Overview -->
+        <div class="overview">
+            <div class="overview-card">
+                <h3>1,250</h3>
+                <p>Total Employees</p>
+            </div>
+            <div class="overview-card">
+                <h3>1,200</h3>
+                <p>Active Employees</p>
+            </div>
+            <div class="overview-card">
+                <h3>50</h3>
+                <p>On Leave</p>
+            </div>
+            <div class="overview-card">
+                <h3>12</h3>
+                <p>Pending Approvals</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button><i class="fas fa-plus"></i>Add New Employee</button>
+            <button><i class="fas fa-edit"></i>Edit Employee</button>
+            <button><i class="fas fa-eye"></i>View Employees</button>
+            <button><i class="fas fa-file-download"></i>Generate Reports</button>
+            <button><i class="fas fa-cogs"></i>Manage Roles & Departments</button>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="data-visualization">
+            <div class="chart-container">
+                <h2>Employee Distribution by Department</h2>
+                <canvas id="departmentPieChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Employee Count Over Time</h2>
+                <canvas id="employeeBarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Notifications & Alerts -->
+        <div class="notifications">
+            <h2>Notifications</h2>
+            <div class="notification-card">
+                <p>Upcoming Performance Reviews</p>
+                <p class="time">2 days ago</p>
+            </div>
+            <div class="notification-card">
+                <p>Pending Payroll Processing</p>
+                <p class="time">1 day ago</p>
+            </div>
+            <div class="notification-card">
+                <p>Employee Contract Expiry Reminders</p>
+                <p class="time">5 hours ago</p>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="recent-activities">
+            <h2>Recent Activities</h2>
+            <div class="activity-card">
+                <p>New Employee Registration: John Doe</p>
+                <p class="time">3 hours ago</p>
+            </div>
+            <div class="activity-card">
+                <p>Salary Updated for Jane Smith</p>
+                <p class="time">1 day ago</p>
+            </div>
+            <div class="activity-card">
+                <p>Performance Review Feedback Submitted</p>
+                <p class="time">2 days ago</p>
+            </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="search-filter">
+            <input type="text" placeholder="Search employees...">
+            <select>
+                <option value="">Filter by Status</option>
+                <option value="active">Active</option>
+                <option value="on-leave">On Leave</option>
+            </select>
+            <select>
+                <option value="">Filter by Department</option>
+                <option value="hr">HR</option>
+                <option value="it">IT</option>
+            </select>
+            <button>Search</button>
+        </div>
+    </div>
+{% endblock %}

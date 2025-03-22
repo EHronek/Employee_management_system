@@ -1,0 +1,297 @@
+/* static/styles/employee_profile.css */
+
+/* General Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+  padding: 0;
+}
+
+/* Employee Profile Section */
+.employee-profile {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.employee-profile img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 1.5rem;
+  border: 3px solid #2563eb;
+}
+
+.employee-profile .details h2 {
+  font-size: 1.75rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.employee-profile .details p {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0.25rem 0;
+}
+
+.employee-profile .details .status-active {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+/* Main Content */
+.content {
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Overview */
+.profile-overview {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-overview .profile-pic img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid #2563eb;
+  margin-bottom: 1rem;
+}
+
+.profile-overview h1 {
+  font-size: 2rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.profile-overview p {
+  font-size: 1.25rem;
+  color: #64748b;
+}
+
+.profile-overview #uploadPicBtn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.profile-overview #uploadPicBtn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Personal Information Form */
+.personal-info {
+  margin-bottom: 2rem;
+}
+
+.personal-info h2,
+.employment-details h2,
+.security-settings h2,
+.notification-preferences h2 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 0.5rem;
+}
+
+.personal-info form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.personal-info label {
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.personal-info input,
+.personal-info select,
+.personal-info textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: border-color 0.3s;
+}
+
+.personal-info input:focus,
+.personal-info select:focus,
+.personal-info textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.personal-info textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.personal-info button[type="submit"] {
+  grid-column: span 2;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.personal-info button[type="submit"]:hover {
+  background-color: #1d4ed8;
+}
+
+/* Employment Details */
+.employment-details {
+  margin-bottom: 2rem;
+}
+
+.employment-details p {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0.5rem 0;
+}
+
+.employment-details p strong {
+  color: #1e293b;
+}
+
+/* Security & Account Settings */
+.security-settings {
+  margin-bottom: 2rem;
+}
+
+.security-settings button,
+.security-settings label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.security-settings button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.security-settings button:hover {
+  background-color: #1d4ed8;
+}
+
+.security-settings label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+/* Notification Preferences */
+.notification-preferences label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content .close {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-content label {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: border-color 0.3s;
+}
+
+.modal-content input:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.modal-content button[type="submit"] {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.modal-content button[type="submit"]:hover {
+  background-color: #1d4ed8;
+}

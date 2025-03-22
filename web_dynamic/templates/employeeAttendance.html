@@ -1,0 +1,103 @@
+{% extends "employee_base_layout.html" %}
+{% block title%}Employee Dashboard{% endblock%}
+{% block header %} Dashboard{% endblock %}
+{% block profile %} 
+    <!-- Employee Profile -->
+    <div class="employee-profile">
+        <img src="employee-avatar.jpg" alt="Employee Avatar">
+        <div class="details">
+            <h2>Jane Doe</h2>
+            <p>Manager | HR Department</p>
+            <p>Status: <span class="status-active">Active</span></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1>Attendance</h1>
+            </div>
+    
+            <!-- Check-In/Check-Out Section -->
+            <div class="check-in-out">
+                <button id="checkInOutButton"><i class="fas fa-clock"></i>Check In</button>
+                <p class="status" id="checkInStatus">You are currently checked out.</p>
+            </div>
+    
+            <!-- Attendance History Table -->
+            <div class="attendance-history">
+                <h2>Attendance History</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Check-In Time</th>
+                            <th>Check-Out Time</th>
+                            <th>Total Hours</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2023-10-01</td>
+                            <td>08:30 AM</td>
+                            <td>05:30 PM</td>
+                            <td>9 hours</td>
+                            <td class="status-present">Present</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-02</td>
+                            <td>09:00 AM</td>
+                            <td>05:00 PM</td>
+                            <td>8 hours</td>
+                            <td class="status-late">Late</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-03</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td class="status-absent">Absent</td>
+                        </tr>
+                        <tr>
+                            <td>2023-10-04</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td class="status-leave">On Leave</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- Monthly Attendance Summary -->
+            <div class="monthly-summary">
+                <h2>Monthly Attendance Summary</h2>
+                <canvas id="attendanceBarChart"></canvas>
+            </div>
+    
+            <!-- Request Attendance Correction -->
+            <div class="attendance-correction">
+                <h2>Request Attendance Correction</h2>
+                <button><i class="fas fa-edit"></i>Request Correction</button>
+            </div>
+    
+            <!-- Notification -->
+            <div class="notification">
+                <h2>Notification</h2>
+                <div class="notification-card">
+                    <p>You forgot to check out yesterday. Please submit a correction request.</p>
+                    <p class="time">2 hours ago</p>
+                </div>
+                <div class="notification-card">
+                    <p>Your attendance correction request for Oct 2 is pending approval.</p>
+                    <p class="time">1 day ago</p>
+                </div>
+            </div>
+        </div>
+    <script src="{{url_for('static', filename='scripts/employeeAttendance.js')}}"></script>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Reports{% endblock %}
+{% block header %}Reports{% endblock %}
+
+{% block content %}
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1>Generate Reports</h1>
+                
+            </div>
+    
+            <!-- Report Selection Panel -->
+            <div class="report-selection">
+                <button class="active">Employee Overview</button>
+                <button>Department Performance</button>
+                <button>Payroll Report</button>
+                <button>Leave Report</button>
+                <button>Attendance Report</button>
+            </div>
+    
+            <!-- Filters -->
+            <div class="filters">
+                <input type="text" placeholder="Search...">
+                <select>
+                    <option value="">Filter by Department</option>
+                    <option value="hr">HR</option>
+                    <option value="it">IT</option>
+                    <option value="finance">Finance</option>
+                </select>
+                <select>
+                    <option value="">Filter by Status</option>
+                    <option value="active">Active</option>
+                    <option value="on-leave">On Leave</option>
+                    <option value="resigned">Resigned</option>
+                </select>
+                <input type="date" placeholder="Start Date">
+                <input type="date" placeholder="End Date">
+            </div>
+    
+            <!-- Report Actions -->
+            <div class="report-actions">
+                <button><i class="fas fa-download"></i>Generate Report</button>
+                <button><i class="fas fa-file-pdf"></i>Export as PDF</button>
+                <button><i class="fas fa-file-csv"></i>Export as CSV</button>
+                <button><i class="fas fa-print"></i>Print Report</button>
+            </div>
+    
+            <!-- Data Visualization -->
+            <div class="data-visualization">
+                <div class="chart-container">
+                    <h2>Employee Distribution by Department</h2>
+                    <canvas id="departmentPieChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>Salary Distribution</h2>
+                    <canvas id="salaryBarChart"></canvas>
+                </div>
+            </div>
+    
+            <!-- Report Table -->
+            <div class="report-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Full Name</th>
+                            <th>Department</th>
+                            <th>Position</th>
+                            <th>Status</th>
+                            <th>Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>John Doe</td>
+                            <td>HR</td>
+                            <td>Manager</td>
+                            <td>Active</td>
+                            <td>$75,000</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Jane Smith</td>
+                            <td>IT</td>
+                            <td>Developer</td>
+                            <td>On Leave</td>
+                            <td>$65,000</td>
+                        </tr>
+                        <!-- Add more rows here -->
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>4</button>
+                <button>5</button>
+            </div>
+        </div>
+{% endblock %}

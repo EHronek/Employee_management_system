@@ -1,0 +1,68 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Dashboard | EMS{% endblock %}
+{% block header %}Admin Dashboard{% endblock %}
+{% block content %}
+    <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+        <h1>Department Management</h1>
+        <div class="header-actions">
+            <button class="create-department-btn">
+                <i class="fas fa-plus"></i>Create New Department
+            </button>
+           
+        </div>
+    </div>
+
+    <!-- Search & Filter Section -->
+    <div class="search-filter">
+        <input type="text" placeholder="Search departments...">
+        <select>
+            <option value="">Filter by Manager</option>
+            <option value="manager1">Manager 1</option>
+            <option value="manager2">Manager 2</option>
+        </select>
+        <select>
+            <option value="">Filter by Budget</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+        <button>Search</button>
+    </div>
+
+    <!-- Department Cards -->
+    <div class="cards">
+        <div class="card">
+            <h3>HR Department</h3>
+            <p><strong>Manager:</strong> Jane Doe</p>
+            <p><strong>Budget:</strong> $500,000</p>
+            <p><strong>Employees:</strong> 120</p>
+            <div class="card-actions">
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+            </div>
+        </div>
+        <div class="card">
+            <h3>IT Department</h3>
+            <p><strong>Manager:</strong> John Smith</p>
+            <p><strong>Budget:</strong> $750,000</p>
+            <p><strong>Employees:</strong> 85</p>
+            <div class="card-actions">
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+            </div>
+        </div>
+        <!-- Add more department cards here -->
+    </div>
+
+    <!-- Analytics Section -->
+    <div class="analytics">
+        <h2>Department Analytics</h2>
+        <div class="chart-container">
+            <canvas id="departmentChart"></canvas>
+        </div>
+    </div>
+    </div>
+    
+{% endblock %}

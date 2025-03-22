@@ -1,0 +1,77 @@
+{% extends "employee_base_layout.html" %}
+{% block title%}Employee Dashboard{% endblock%}
+
+{% block header %} Dashboard{% endblock %}
+{% block profile %} 
+    <!-- Employee Profile -->
+    <div class="employee-profile">
+        <img src="employee-avatar.jpg" alt="Employee Avatar">
+        <div class="details">
+            <h2>Jane Doe</h2>
+            <p>Manager | HR Department</p>
+            <p>Status: <span class="status-active">Active</span></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<!-- Overview Cards -->
+<div class="overview">
+    <div class="overview-card">
+        <h3>120</h3>
+        <p>Total Hours Worked</p>
+    </div>
+    <div class="overview-card">
+        <h3>15</h3>
+        <p>Leave Days Remaining</p>
+    </div>
+    <div class="overview-card">
+        <h3>$7,500</h3>
+        <p>Last Salary Payment</p>
+    </div>
+    <div class="overview-card">
+        <h3>4.5/5</h3>
+        <p>Performance Rating</p>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="quick-actions">
+    <button><i class="fas fa-clock"></i>Check In/Out</button>
+    <button><i class="fas fa-calendar-plus"></i>Request Leave</button>
+    <button><i class="fas fa-file-invoice"></i>View Payslip</button>
+    <button><i class="fas fa-user-edit"></i>Update Profile</button>
+</div>
+
+<!-- Data Visualization -->
+<div class="data-visualization">
+    <div class="chart-container">
+        <h2>Attendance Trends</h2>
+        <canvas id="attendanceLineChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <h2>Performance Metrics</h2>
+        <canvas id="performanceBarChart"></canvas>
+    </div>
+</div>
+
+<!-- Recent Notifications -->
+<div class="notifications">
+    <h2>Recent Notifications</h2>
+    <div class="notification-card">
+        <p>New Company Announcement: Annual Review Meeting</p>
+        <p class="time">2 hours ago</p>
+    </div>
+    <div class="notification-card">
+        <p>Leave Request Approved: 3 Days (Dec 15 - Dec 17)</p>
+        <p class="time">1 day ago</p>
+    </div>
+    <div class="notification-card">
+        <p>Performance Review Feedback Submitted</p>
+        <p class="time">3 days ago</p>
+    </div>
+</div>
+</div>
+<script src="{{ url_for('static', filename='scripts/employee_base.js')}}"></script>
+
+{% endblock %}

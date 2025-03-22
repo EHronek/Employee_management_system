@@ -1,0 +1,120 @@
+{% extends "employee_base_layout.html" %}
+{% block title%}Training and Development{% endblock%}
+
+{% block header %} Training and Development{% endblock %}
+{% block profile %} 
+    <!-- Employee Profile -->
+    <div class="employee-profile">
+        <img src="employee-avatar.jpg" alt="Employee Avatar">
+        <div class="details">
+            <h2>Jane Doe</h2>
+            <p>Manager | HR Department</p>
+            <p>Status: <span class="status-active">Active</span></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1>Training & Development</h1>
+            </div>
+    
+            <!-- Search & Filters -->
+            <div class="search-filters">
+                <input type="text" placeholder="Search courses...">
+                <select>
+                    <option value="">Filter by Category</option>
+                    <option value="technical">Technical</option>
+                    <option value="leadership">Leadership</option>
+                    <option value="compliance">Compliance</option>
+                </select>
+                <select>
+                    <option value="">Filter by Duration</option>
+                    <option value="short">Short Courses</option>
+                    <option value="long">Long-Term Training</option>
+                </select>
+                <button>Search</button>
+            </div>
+    
+            <!-- Available Training Programs -->
+            <div class="training-programs">
+                <h2>Available Training Programs</h2>
+                <div class="training-grid">
+                    <div class="training-card">
+                        <h3>Introduction to Leadership</h3>
+                        <p>Learn the fundamentals of effective leadership.</p>
+                        <p><strong>Instructor:</strong> John Doe</p>
+                        <p><strong>Duration:</strong> 4 weeks</p>
+                        <button>Enroll Now</button>
+                    </div>
+                    <div class="training-card">
+                        <h3>Advanced JavaScript</h3>
+                        <p>Master advanced JavaScript concepts and frameworks.</p>
+                        <p><strong>Instructor:</strong> Jane Smith</p>
+                        <p><strong>Duration:</strong> 6 weeks</p>
+                        <button>Enroll Now</button>
+                    </div>
+                    <div class="training-card">
+                        <h3>Compliance Training</h3>
+                        <p>Understand company policies and legal requirements.</p>
+                        <p><strong>Instructor:</strong> HR Team</p>
+                        <p><strong>Duration:</strong> 2 weeks</p>
+                        <button>Enroll Now</button>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- My Enrolled Courses -->
+            <div class="enrolled-courses">
+                <h2>My Enrolled Courses</h2>
+                <div class="course-card">
+                    <h3>Introduction to Leadership</h3>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p>60% completed</p>
+                    <button>Resume Training</button>
+                </div>
+                <div class="course-card">
+                    <h3>Advanced JavaScript</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 30%;"></div>
+                    </div>
+                    <p>30% completed</p>
+                    <button>Resume Training</button>
+                </div>
+            </div>
+    
+            <!-- Training Calendar -->
+            <div class="training-calendar">
+                <h2>Training Calendar</h2>
+                <div class="calendar">
+                    <!-- Calendar content goes here -->
+                    <p>Upcoming Training Sessions:</p>
+                    <ul>
+                        <li>Oct 25: Leadership Workshop</li>
+                        <li>Oct 30: JavaScript Masterclass</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <!-- Certification Records -->
+            <div class="certification-records">
+                <h2>Certification Records</h2>
+                <div class="certification-card">
+                    <h3>Introduction to Leadership</h3>
+                    <p>Completed on Oct 15, 2023</p>
+                    <button>Download Certificate</button>
+                </div>
+                <div class="certification-card">
+                    <h3>Compliance Training</h3>
+                    <p>Completed on Sep 30, 2023</p>
+                    <button>Download Certificate</button>
+                </div>
+            </div>
+        </div>
+        
+{% endblock %}

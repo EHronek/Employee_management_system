@@ -1,0 +1,115 @@
+{% extends "employee_base_layout.html" %}
+{% block title%}Employee profile and Settings{% endblock%}
+
+{% block header %} Employee Account Settings{% endblock %}
+
+
+{% block content %}
+
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Employee Profile Overview -->
+        <section class="profile-overview">
+        <div class="profile-pic">
+            <img src="profile-placeholder.jpg" alt="Profile Picture">
+            <button id="uploadPicBtn">Upload/Change Picture</button>
+        </div>
+        <h1>John Doe</h1>
+        <p>Software Engineer | IT Department</p>
+        </section>
+
+        <!-- Personal Information -->
+        <section class="personal-info">
+        <h2>Personal Information</h2>
+        <form id="personalInfoForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" value="John" required>
+            
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" value="Doe" required>
+            
+            <label for="workEmail">Work Email:</label>
+            <input type="email" id="workEmail" value="john.doe@company.com" disabled>
+            
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" value="+1234567890" required>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" value="1990-01-01" required>
+            
+            <label for="gender">Gender:</label>
+            <select id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+            </select>
+            
+            <label for="address">Address:</label>
+            <textarea id="address" required>123 Main St, City, Country</textarea>
+            
+            <label for="emergencyContact">Emergency Contact:</label>
+            <input type="text" id="emergencyContact" value="Jane Doe (+9876543210)" required>
+            
+            <button type="submit">Save Changes</button>
+        </form>
+        </section>
+
+        <!-- Employment Details -->
+        <section class="employment-details">
+        <h2>Employment Details</h2>
+        <p><strong>Employee ID:</strong> EMP12345</p>
+        <p><strong>Department:</strong> IT</p>
+        <p><strong>Position:</strong> Software Engineer</p>
+        <p><strong>Hire Date:</strong> 2020-01-15</p>
+        <p><strong>Supervisor:</strong> Jane Smith</p>
+        <p><strong>Employment Type:</strong> Full-time</p>
+        </section>
+
+        <!-- Security & Account Settings -->
+        <section class="security-settings">
+        <h2>Security & Account Settings</h2>
+        <button id="changePasswordBtn">Change Password</button>
+        <label>
+            <input type="checkbox" id="enable2FA"> Enable Two-Factor Authentication (2FA)
+        </label>
+        <button id="manageSessionsBtn">Manage Login Sessions</button>
+        </section>
+
+        <!-- Notification Preferences -->
+        <section class="notification-preferences">
+        <h2>Notification Preferences</h2>
+        <label>
+            <input type="checkbox" id="emailNotifications"> Email Notifications
+        </label>
+        <label>
+            <input type="checkbox" id="smsAlerts"> SMS Alerts
+        </label>
+        <label>
+            <input type="checkbox" id="pushNotifications"> Push Notifications
+        </label>
+        </section>
+    </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Change Password</h2>
+        <form id="changePasswordForm">
+        <label for="currentPassword">Current Password:</label>
+        <input type="password" id="currentPassword" required>
+        
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" required>
+        
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" required>
+        
+        <button type="submit">Update Password</button>
+        </form>
+    </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/account_settings.js') }}"></script>
+
+{% endblock %}

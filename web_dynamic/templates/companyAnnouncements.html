@@ -1,0 +1,96 @@
+{% extends "employee_base_layout.html" %}
+{% block title%}Employee Dashboard{% endblock%}
+
+{% block header %} Dashboard{% endblock %}
+{% block profile %} 
+    <!-- Employee Profile -->
+    <div class="employee-profile">
+        <img src="employee-avatar.jpg" alt="Employee Avatar">
+        <div class="details">
+            <h2>Jane Doe</h2>
+            <p>Manager | HR Department</p>
+            <p>Status: <span class="status-active">Active</span></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Company Announcements</h1>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="search-filters">
+            <input type="text" placeholder="Search announcements...">
+            <select>
+                <option value="">Filter by Category</option>
+                <option value="hr">HR Updates</option>
+                <option value="events">Events</option>
+                <option value="policy">Policy Changes</option>
+            </select>
+            <button>Search</button>
+        </div>
+
+        <!-- Featured Announcements -->
+        <div class="featured-announcements">
+            <h2>Featured Announcements</h2>
+            <div class="announcement-card">
+                <div>
+                    <h3>Public Holiday: Office Closure</h3>
+                    <p>Oct 25, 2023 | Posted by HR</p>
+                </div>
+                <button onclick="openModal()">Read More</button>
+            </div>
+            <div class="announcement-card">
+                <div>
+                    <h3>Upcoming Training Session</h3>
+                    <p>Oct 30, 2023 | Posted by Training Team</p>
+                </div>
+                <button onclick="openModal()">Read More</button>
+            </div>
+        </div>
+
+        <!-- Announcement Feed -->
+        <div class="announcement-feed">
+            <h2>All Announcements</h2>
+            <div class="announcement-card unread">
+                <div>
+                    <h3>New Company Policy Update</h3>
+                    <p>Oct 20, 2023 | Posted by Admin</p>
+                </div>
+                <button onclick="openModal()">Read More</button>
+            </div>
+            <div class="announcement-card">
+                <div>
+                    <h3>Performance Review Deadlines</h3>
+                    <p>Oct 18, 2023 | Posted by HR</p>
+                </div>
+                <button onclick="openModal()">Read More</button>
+            </div>
+            <div class="announcement-card">
+                <div>
+                    <h3>Monthly Town Hall Meeting</h3>
+                    <p>Oct 15, 2023 | Posted by CEO</p>
+                </div>
+                <button onclick="openModal()">Read More</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Announcement Details Modal -->
+    <div class="modal" id="announcementModal">
+        <div class="modal-content">
+            <h2>Public Holiday: Office Closure</h2>
+            <p>Please note that the office will be closed on October 25, 2023, in observance of a public holiday. All employees are encouraged to plan accordingly.</p>
+            <div class="attachments">
+                <a href="#"><i class="fas fa-file-pdf"></i>Holiday Schedule.pdf</a>
+            </div>
+            <button class="close-button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/companyAnnouncements.js') }}"></script>    
+{% endblock %}

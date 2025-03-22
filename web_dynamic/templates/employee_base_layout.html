@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title%}Employee Dashboard {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/employeeDashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/employeeAttendance.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/leaveRequest.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/companyAnnouncements.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/account_settings.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/training_development.css') }}">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">EMS</div>
+        <div class="nav-links">
+            <a href="#" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="#"><i class="fas fa-calendar-check"></i>Attendance</a>
+            <a href="#"><i class="fas fa-calendar-times"></i>Leave Requests</a>
+            <a href="#"><i class="fas fa-money-bill"></i>Payroll</a>
+            <a href="#"><i class="fas fa-star"></i>Performance Reviews</a>
+            <a href="#"><i class="fas fa-graduation-cap"></i>Training & Development</a>
+            <a href="#"><i class="fas fa-bullhorn"></i>Company Announcements</a>
+            <a href="#"><i class="fas fa-user-circle"></i>Profile & Settings</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>{% block header %}Employee Dashboard{% endblock%}</h1>
+        </div>
+
+        {% block profile %}
+
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+
+</body>
+</html>

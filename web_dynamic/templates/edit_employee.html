@@ -1,0 +1,123 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Edit Employee {% endblock %}
+{% block header %} Edit Employee | EMS{% endblock%}
+
+{% block head %}
+    {{ super() }}
+     <link rel="stylesheet" href="{{ url_for('static', filename='styles/edit_employee.css') }}">
+{% endblock %}
+
+{% block content %}
+    <!-- Form Container -->
+    <div class="form-container">
+        <form id="editEmployeeForm">
+            <!-- First Name -->
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" placeholder="Enter first name" value="John" required>
+                <div class="error-message">First name is required.</div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Enter last name" value="Doe" required>
+                <div class="error-message">Last name is required.</div>
+            </div>
+
+            <!-- Work Email -->
+            <div class="form-group">
+                <label for="workEmail">Work Email</label>
+                <input type="email" id="workEmail" name="workEmail" placeholder="Enter work email" value="john.doe@company.com" disabled>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" value="+1234567890" required>
+                <div class="error-message">Phone number is required.</div>
+            </div>
+
+            <!-- Salary -->
+            <div class="form-group">
+                <label for="salary">Salary</label>
+                <input type="number" id="salary" name="salary" placeholder="Enter salary" value="75000" required>
+                <div class="error-message">Salary is required.</div>
+            </div>
+
+            <!-- Hire Date -->
+            <div class="form-group">
+                <label for="hireDate">Hire Date</label>
+                <input type="date" id="hireDate" name="hireDate" value="2020-01-15" disabled>
+            </div>
+
+            <!-- Department -->
+            <div class="form-group">
+                <label for="department">Department</label>
+                <select id="department" name="department" class="searchable-dropdown" required>
+                    <option value="">Select department</option>
+                    <option value="hr" selected>HR</option>
+                    <option value="it">IT</option>
+                    <option value="finance">Finance</option>
+                    <option value="marketing">Marketing</option>
+                </select>
+                <div class="error-message">Department is required.</div>
+            </div>
+
+            <!-- Position -->
+            <div class="form-group">
+                <label for="position">Position</label>
+                <select id="position" name="position" class="searchable-dropdown" required>
+                    <option value="">Select position</option>
+                    <option value="manager" selected>Manager</option>
+                    <option value="developer">Developer</option>
+                    <option value="analyst">Analyst</option>
+                    <option value="designer">Designer</option>
+                </select>
+                <div class="error-message">Position is required.</div>
+            </div>
+
+            <!-- Supervisor -->
+            <div class="form-group">
+                <label for="supervisor">Supervisor</label>
+                <select id="supervisor" name="supervisor" class="searchable-dropdown" required>
+                    <option value="">Select supervisor</option>
+                    <option value="jane-smith" selected>Jane Smith</option>
+                    <option value="alice-johnson">Alice Johnson</option>
+                </select>
+                <div class="error-message">Supervisor is required.</div>
+            </div>
+
+            <!-- Employment Status -->
+            <div class="form-group">
+                <label>Employment Status</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="employmentStatus" value="full-time" checked> Full-Time
+                    </label>
+                    <label>
+                        <input type="radio" name="employmentStatus" value="part-time"> Part-Time
+                    </label>
+                    <label>
+                        <input type="radio" name="employmentStatus" value="contract"> Contract
+                    </label>
+                </div>
+                <div class="error-message">Employment status is required.</div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit">
+                    <span>Save Changes</span>
+                    <span class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+                <button type="button" onclick="window.location.href='employees.html'">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!--     <script src="{{ url_for('static', filename='scripts/edit_employee.js') }}"></script>
+ -->
+    
+{% endblock %}
