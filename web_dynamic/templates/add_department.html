@@ -11,11 +11,33 @@
 
     <!-- Form Container -->
     <div class="form-container">
-        <form id="newDepartmentForm">
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- JavaScript for Delayed Redirect -->
+        {% if redirect_url %}
+        <script>
+            setTimeout(function() {
+                window.location.href = "{{ redirect_url }}";
+            }, 3000);  // Wait 3 seconds before redirecting
+        </script>
+        {% endif %}
+
+        <form id="newDepartmentForm" action="{{ url_for('admin.add_department') }}" method="POST">
             <!-- Department Name -->
             <div class="form-group">
                 <label for="departmentName">Department Name</label>
-                <input type="text" id="departmentName" name="departmentName" placeholder="Enter department name" required maxlength="128">
+                <input type="text" id="departmentName" name="name" placeholder="Enter department name" required maxlength="128">
                 <div class="error-message">Department name must be unique and less than 128 characters.</div>
             </div>
 
@@ -30,9 +52,9 @@
                 <label for="departmentManager">Department Manager</label>
                 <select id="departmentManager" name="departmentManager" class="searchable-dropdown">
                     <option value="">Select a manager</option>
-                    <option value="1">Jane Doe</option>
-                    <option value="2">John Smith</option>
-                    <option value="3">Alice Johnson</option>
+                    {% for manager in managers %}
+                        <option value="{{ manager.id }}">{{ manager.first_name ~ " " ~ manager.last_name }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -45,7 +67,7 @@
             <!-- Total Employees -->
             <div class="form-group">
                 <label for="totalEmployees">Total Employees</label>
-                <input type="number" id="totalEmployees" name="totalEmployees" value="0" readonly>
+                <input type="number" id="totalEmployees" name="total_employees" value="0" readonly>
             </div>
 
             <!-- Form Actions -->

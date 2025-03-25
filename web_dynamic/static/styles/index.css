@@ -47,8 +47,25 @@ body {
   background: #334155;
 }
 
-.nav-links a.active {
+/* .nav-links a.active {
   background: #2563eb;
+} */
+
+.nav-link {
+  display: block;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.nav-link.active {
+  background-color: #2563eb; /* Blue highlight */
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  background-color: #555;
 }
 
 .nav-links a i {

@@ -1,23 +1,31 @@
 {% extends "admin_base_layout.html" %}
 {% block title %}Dashboard | EMS{% endblock %}
 {% block header %}Admin Dashboard{% endblock %}
+
+{% block profile%}
+    <div class="user-profile">
+        <img src="{{ url_for('static', filename='images/admin_avatar.png') }}" alt="Admin Avatar">
+        <span>Welcome, {{ user_data.first_name }}</span>
+    </div>
+{% endblock %}
+
 {% block content %}
     <!-- Dashboard Cards -->
     <div class="cards">
         <div class="card">
             <i class="fas fa-users card-icon"></i>
             <h3>Total Employees</h3>
-            <p>1,250</p>
+            <p>{{ storage.count("Employee") }}</p>
         </div>
         <div class="card">
             <i class="fas fa-building card-icon"></i>
             <h3>Departments</h3>
-            <p>15</p>
+            <p>{{ storage.count("Department") }}</p>
         </div>
         <div class="card">
             <i class="fas fa-user-tag card-icon"></i>
-            <h3>Active Roles</h3>
-            <p>25</p>
+            <h3>Active Positions</h3>
+            <p>{{ storage.count("Position") }}</p>
         </div>
         <div class="card">
             <i class="fas fa-clock card-icon"></i>

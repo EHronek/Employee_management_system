@@ -31,11 +31,11 @@
 
         <!-- Quick Actions -->
         <div class="quick-actions">
-            <button><i class="fas fa-plus"></i>Add New Employee</button>
-            <button><i class="fas fa-edit"></i>Edit Employee</button>
-            <button><i class="fas fa-eye"></i>View Employees</button>
-            <button><i class="fas fa-file-download"></i>Generate Reports</button>
-            <button><i class="fas fa-cogs"></i>Manage Roles & Departments</button>
+            <a href="{{ url_for('admin.add_employee') }}"><button><i class="fas fa-plus"></i>Add New Employee</button></a>
+            <a href="{{ url_for('admin.add_department') }}"><button><i class="fas fa-edit"></i>Edit Employee</button></a>
+            <a href=""><button><i class="fas fa-eye"></i>View Employees</button></a>
+            <a href=""><button><i class="fas fa-file-download"></i>Generate Reports</button></a>
+            <a href=""><button><i class="fas fa-cogs"></i>Manage Roles & Departments</button></a>
         </div>
 
         <!-- Data Visualization -->

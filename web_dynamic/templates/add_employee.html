@@ -8,42 +8,66 @@
         <!-- Main Content -->
         <div class="main-content">
             <!-- Header -->
-            <div class="header">
+            <!-- <div class="header">
                 <h1>Add New Employee</h1>
                 <div class="user-profile">
-                    <img src="admin-avatar.jpg" alt="Admin Avatar">
-                    <span>John Doe</span>
+                    <img src="{{ url_for('static', filename='images/admin-avatar.jpg') }}" alt="admin Avatar">
+                    <span>{{ user_data.name }}</span>
                 </div>
-            </div>
+            </div> -->
     
             <!-- Form Container -->
             <div class="form-container">
-                <form id="addEmployeeForm">
+                
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="toast-container position-fixed top-0 end-0 p-3">
+                            <div id="liveToast" class="toast show bg-success text-white" role="alert">
+                                <div class="toast-body">
+                                    {% for category, message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            setTimeout(function() {
+                                window.location.href = "{{ url_for('admin.department_dashboard') }}";
+                            }, 2000);
+                        </script>
+                    {% endif %}
+                {% endwith %}
+
+
+                <form id="addEmployeeForm" action="{{ url_for('admin.add_employee') }}" method="POST">
+
                     <!-- First Name -->
                     <div class="form-group">
                         <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+                        <input type="text" id="firstName" name="first_name" placeholder="Enter first name" required>
                         <div class="error-message">First name is required.</div>
                     </div>
     
                     <!-- Last Name -->
                     <div class="form-group">
                         <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+                        <input type="text" id="lastName" name="last_name" placeholder="Enter last name" required>
                         <div class="error-message">Last name is required.</div>
                     </div>
     
                     <!-- Work Email -->
                     <div class="form-group">
                         <label for="workEmail">Work Email</label>
-                        <input type="email" id="workEmail" name="workEmail" placeholder="Enter work email" required>
+                        <input type="email" id="workEmail" name="work_email" placeholder="Enter work email" required>
                         <div class="error-message">Valid work email is required.</div>
                     </div>
     
                     <!-- Phone Number -->
                     <div class="form-group">
                         <label for="phoneNumber">Phone Number</label>
-                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" required>
+                        <input type="tel" id="phoneNumber" name="phone_number" placeholder="Enter phone number" required>
                         <div class="error-message">Phone number is required.</div>
                     </div>
     
@@ -57,19 +81,18 @@
                     <!-- Hire Date -->
                     <div class="form-group">
                         <label for="hireDate">Hire Date</label>
-                        <input type="date" id="hireDate" name="hireDate" required>
+                        <input type="date" id="hireDate" name="hire_date" required>
                         <div class="error-message">Hire date is required.</div>
                     </div>
     
                     <!-- Department -->
                     <div class="form-group">
                         <label for="department">Department</label>
-                        <select id="department" name="department" class="searchable-dropdown" required>
+                        <select id="department" name="department_id" class="searchable-dropdown" required>
                             <option value="">Select department</option>
-                            <option value="hr">HR</option>
-                            <option value="it">IT</option>
-                            <option value="finance">Finance</option>
-                            <option value="marketing">Marketing</option>
+                            {% for department in departments %}
+                                <option value="{{ department.id }}">"{{department.name}}"</option>
+                            {% endfor %}
                         </select>
                         <div class="error-message">Department is required.</div>
                     </div>
@@ -77,12 +100,11 @@
                     <!-- Position -->
                     <div class="form-group">
                         <label for="position">Position</label>
-                        <select id="position" name="position" class="searchable-dropdown" required>
+                        <select id="position" name="position_id" class="searchable-dropdown" required>
                             <option value="">Select position</option>
-                            <option value="manager">Manager</option>
-                            <option value="developer">Developer</option>
-                            <option value="analyst">Analyst</option>
-                            <option value="designer">Designer</option>
+                            {% for position in positions %}
+                                <option value="{{ position.id }}">{{ position.title }}</option>
+                            {% endfor %}
                         </select>
                         <div class="error-message">Position is required.</div>
                     </div>
@@ -90,11 +112,11 @@
                     <!-- Supervisor -->
                     <div class="form-group">
                         <label for="supervisor">Supervisor</label>
-                        <select id="supervisor" name="supervisor" class="searchable-dropdown" required>
+                        <select id="supervisor" name="supervisor_id" class="searchable-dropdown" required>
                             <option value="">Select supervisor</option>
-                            <option value="john-doe">John Doe</option>
-                            <option value="jane-smith">Jane Smith</option>
-                            <option value="alice-johnson">Alice Johnson</option>
+                            {% for supervisor in supervisors %}
+                                <option value="{{ supervisor.id }}">{{ supervisor.first_name ~ " " ~ supervisor.last_name }}</option>
+                            {% endfor %}
                         </select>
                         <div class="error-message">Supervisor is required.</div>
                     </div>
@@ -104,13 +126,13 @@
                         <label>Employment Status</label>
                         <div class="radio-group">
                             <label>
-                                <input type="radio" name="employmentStatus" value="full-time" required> Full-Time
+                                <input type="radio" name="status" value="full-time" required> Full-Time
                             </label>
                             <label>
-                                <input type="radio" name="employmentStatus" value="part-time"> Part-Time
+                                <input type="radio" name="status" value="part-time"> Part-Time
                             </label>
                             <label>
-                                <input type="radio" name="employmentStatus" value="contract"> Contract
+                                <input type="radio" name="status" value="contract"> Contract
                             </label>
                         </div>
                         <div class="error-message">Employment status is required.</div>

@@ -77,6 +77,12 @@
             color: #1e293b;
         }
 
+        .flash-messages {
+            color: red;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
         .input-group {
             margin-bottom: 1.5rem;
             text-align: left;
@@ -140,7 +146,7 @@
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <a href="#" class="logo">WorkFlow Pro</a>
+        <a href="#" class="logo">Employee Management System</a>
         <div class="nav-links">
             <a href="#">Home</a>
             <a href="#">Sign Up</a>
@@ -150,7 +156,21 @@
     <!-- Login Container -->
     <div class="login-container">
         <h1>Employee Login</h1>
-        <form id="loginForm">
+
+        <!-- Flash Messages -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+
+        <form id="loginForm" action="{{ url_for('login_page') }}" method="POST">
             <div class="input-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -166,28 +186,7 @@
 
     <script>
         // Form Submission Handling
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent default form submission
-
-            // Get form data
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Basic validation
-            if (!username || !password) {
-                alert('Please fill in all fields.');
-                return;
-            }
-
-            // Simulate form submission (replace with actual API call)
-            console.log('Submitting form...');
-            console.log('Username:', username);
-            console.log('Password:', password);
-
-            // Redirect or show success message
-            alert('Login successful! Redirecting...');
-            // window.location.href = '/dashboard'; // Redirect to dashboard
-        });
+       
     </script>
 </body>
 </html>

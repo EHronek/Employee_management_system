@@ -153,6 +153,17 @@ class DBStorage:
                 if user.username == username:
                     return True
             return False
+        
+    def get_user_by_username(self, username):
+        """Gets and return a user"""
+        if username is not None:
+            all_users = self.all(User).values()
+
+            for user in all_users:
+                if user.username == username:
+                    return user
+            return None
+
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
@@ -165,6 +176,11 @@ class DBStorage:
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
+
+    def get_session(self):
+        """Returns the current session"""
+        return self.__session
+    
 
     def close(self):
         """call remove() method on the private session attribute"""

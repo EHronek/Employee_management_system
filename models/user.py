@@ -44,3 +44,8 @@ class User(BaseModel, Base):
 
         return hashed.decode('utf-8')
 
+    def check_password(self, password):
+        """Checks if a given password matches the stored hashed password"""
+        password_bytes = password.encode('utf-8')
+        stored_hash_bytes = self.password.encode('utf-8')  # Convert stored hash to bytes
+        return bcrypt.checkpw(password_bytes, stored_hash_bytes)

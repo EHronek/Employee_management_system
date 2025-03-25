@@ -1,15 +1,32 @@
 {% extends "admin_base_layout.html" %}
 {% block title %}Dashboard | EMS{% endblock %}
 {% block header %}Admin Dashboard{% endblock %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div id="flash-message" class="alert alert-{{ messages[0][0] }}" role="alert">
+        {{ messages[0][1] }}
+    </div>
+    {% if redirect_url %}
+    <script>
+        // Wait 3 seconds before redirecting
+        setTimeout(function() {
+            window.location.href = "{{ redirect_url }}";
+        }, 3000);
+    </script>
+    {% endif %}
+{% endif %}
+{% endwith %}
+
 {% block content %}
     <div class="main-content">
     <!-- Header -->
     <div class="header">
         <h1>Department Management</h1>
         <div class="header-actions">
-            <button class="create-department-btn">
+            <a href="{{ url_for('admin.add_department') }}"><button class="create-department-btn">
                 <i class="fas fa-plus"></i>Create New Department
-            </button>
+            </button></a>
            
         </div>
     </div>

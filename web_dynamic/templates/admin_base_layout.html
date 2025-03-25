@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/add_department.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/generate_reports.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/update_department.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JavaScript Bundle (Popper.js included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 <body>
@@ -21,12 +25,12 @@
     <div class="sidebar">
         <div class="logo">EMS</div>
         <div class="nav-links">
-            <a href="#" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
-            <a href="#"><i class="fas fa-building"></i>Department</a>
-            <a href="#"><i class="fas fa-user-tag"></i>Roles</a>
-            <a href="#"><i class="fas fa-users"></i>Employees</a>
-            <a href="#"><i class="fas fa-user-circle"></i>My Account</a>
-            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+            <a href="{{ url_for('admin.admin_dashboard') }}" class="nav-link"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="{{ url_for('admin.department_dashboard') }}" class="nav-link"><i class="fas fa-building"></i>Department</a>
+            <a href="#" class="nav-link"><i class="fas fa-user-tag"></i>Positions</a>
+            <a href="{{ url_for('admin.employee_dashboard') }}" class="nav-link"><i class="fas fa-users"></i>Employees</a>
+            <a href="#" class="nav-link"><i class="fas fa-user-circle"></i>My Account</a>
+            <a href="{{ url_for('logout') }}" class="nav-link"><i class="fas fa-sign-out-alt"></i>Logout</a>
         </div>
     </div>
 
@@ -35,14 +39,42 @@
         <!-- Header -->
         <div class="header">
             <h1>{% block header %}Dashboard{% endblock %}</h1>
-            <div class="user-profile">
-                <img src="{{ url_for('static', filename='images/admin_avatar.png') }}" alt="Admin Avatar">
-                <span>John Doe</span>
-            </div>
+            {% block profile %}{% endblock %}
         </div>
 
         {% block content %}{% endblock %}
 
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        // Get the current page URL
+        let currentUrl = window.location.href;
+
+        // Remove 'active' from all links, then check which one matches current URL
+        $(".nav-link").each(function () {
+            let linkUrl = $(this).attr("href");
+
+            // Check if the current URL contains the link URL
+            if (currentUrl.includes(linkUrl)) {
+                $(".nav-link").removeClass("active"); // Remove active from all
+                $(this).addClass("active"); // Add active to the matching link
+            }
+        });
+
+        // Handle clicks and store in localStorage
+        $(".nav-link").click(function () {
+            localStorage.setItem("activeNav", $(this).attr("href"));
+        });
+
+        // Get stored active link from localStorage and highlight it
+        let activeNav = localStorage.getItem("activeNav");
+        if (activeNav) {
+            $(".nav-link").removeClass("active"); // Remove from all
+            $('.nav-link[href="' + activeNav + '"]').addClass("active"); // Set active
+        }
+    });
+    </script>
 </body>
 </html>
