@@ -33,11 +33,12 @@
 
     <!-- Search & Filter Section -->
     <div class="search-filter">
-        <input type="text" placeholder="Search departments...">
-        <select>
+        <input type="text" id="searchInput" placeholder="Search departments...">
+        <select id="filterManager">
             <option value="">Filter by Manager</option>
-            <option value="manager1">Manager 1</option>
-            <option value="manager2">Manager 2</option>
+            {% for dept in departments %}
+                <option value="{{ dept.manager }}">{{ dept.manager }}</option>
+            {% endfor %}
         </select>
         <select>
             <option value="">Filter by Budget</option>
@@ -45,22 +46,29 @@
             <option value="medium">Medium</option>
             <option value="high">High</option>
         </select>
-        <button>Search</button>
+        <button onclick="filterDepartments()">Search</button>
     </div>
 
     <!-- Department Cards -->
     <div class="cards">
-        <div class="card">
-            <h3>HR Department</h3>
-            <p><strong>Manager:</strong> Jane Doe</p>
-            <p><strong>Budget:</strong> $500,000</p>
-            <p><strong>Employees:</strong> 120</p>
-            <div class="card-actions">
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
+        {% for dept in departments %}
+            <div class="card">
+                <h3>{{ dept.name }}</h3>
+                <p><strong>Manager:</strong> {{ dept.manager }} </p>
+                <p><strong>Budget:</strong> {{ dept.budget }}</p>
+                <p><strong>Employees:</strong> {{ dept.employees }}</p>
+                <div class="card-actions">
+                    <a href="{{ url_for('admin.edit_department', dept_id=dept.id) }}"><button class="edit">Edit</button></a>
+                    <form action="{{ url_for('admin.delete_department', dept_id=dept.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this department?');">
+                        <button type="submit" class="delete">Delete</button>
+                    </form>
+                    
+                </div>
             </div>
-        </div>
-        <div class="card">
+        {% else %}
+        <p> No departments available.</p>
+        {% endfor %}
+        <!-- <div class="card">
             <h3>IT Department</h3>
             <p><strong>Manager:</strong> John Smith</p>
             <p><strong>Budget:</strong> $750,000</p>
@@ -69,7 +77,7 @@
                 <button class="edit">Edit</button>
                 <button class="delete">Delete</button>
             </div>
-        </div>
+        </div> -->
         <!-- Add more department cards here -->
     </div>
 
@@ -81,5 +89,54 @@
         </div>
     </div>
     </div>
+
+    <script>
+        function filterDepartments() {
+            let searchInput = document.getElementById("searchInput").value.toLowerCase();
+            let managerFilter = document.getElementById("filterManager").value.toLowerCase();
+            let cards = document.querySelectorAll(".card");
+    
+            cards.forEach(card => {
+                let name = card.querySelector("h3").textContent.toLowerCase();
+                let manager = card.querySelector("p:nth-of-type(1)").textContent.toLowerCase();
+                
+                if ((searchInput && !name.includes(searchInput)) || (managerFilter && !manager.includes(managerFilter))) {
+                    card.style.display = "none";
+                } else {
+                    card.style.display = "block";
+                }
+            });
+        }
+    
+        // Sample Chart.js implementation (Dynamic Data)
+        document.addEventListener("DOMContentLoaded", function () {
+            let ctx = document.getElementById("departmentChart").getContext("2d");
+    
+            let departmentNames = [{% for dept in departments %}"{{ dept.name }}",{% endfor %}];
+            let employeeCounts = [{% for dept in departments %}{{ dept.employees }},{% endfor %}];
+    
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: departmentNames,
+                    datasets: [{
+                        label: "Number of Employees",
+                        data: employeeCounts,
+                        backgroundColor: "rgba(75, 192, 192, 0.5)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     
 {% endblock %}

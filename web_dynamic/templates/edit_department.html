@@ -1,0 +1,87 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Edit Department{% endblock %}
+{% block header %} Edit Department{% endblock %}
+{% block content %}
+   <!-- Main Content -->
+   <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+        <h1>Edit Department</h1>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- JavaScript for Delayed Redirect -->
+        {% if redirect_url %}
+        <script>
+            setTimeout(function() {
+                window.location.href = "{{ redirect_url }}";
+            }, 3000);  // Wait 3 seconds before redirecting
+        </script>
+        {% endif %}
+
+
+        <form id="editDepartmentForm" action="{{ url_for('admin.edit_department', dept_id=department.id) }}" method="POST">
+            <!-- Department Name -->
+            <div class="form-group">
+                <label for="departmentName">Department Name</label>
+                <input type="text" id="departmentName" name="name" value="{{ department.name }}" required maxlength="128">
+                <div class="error-message">Department name must be unique and less than 128 characters.</div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" maxlength="256">{{ department.description }}</textarea>
+            </div>
+
+            <!-- Department Manager -->
+            <div class="form-group">
+                <label for="departmentManager">Department Manager</label>
+                <select id="departmentManager" name="departmentManager" class="searchable-dropdown">
+                    <option value="">Select a manager</option>
+                    {% for manager in managers %}
+                        <option value="{{ manager.id }}" {% if department.manager_id == manager.id %}selected{% endif %}>
+                            {{ manager.first_name ~ " " ~ manager.last_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Budget Allocation -->
+            <div class="form-group">
+                <label for="budget">Budget Allocation</label>
+                <input type="number" id="budget" name="budget" value="{{ department.budget }}" min="0">
+            </div>
+
+            <!-- Total Employees -->
+            <div class="form-group">
+                <label for="totalEmployees">Total Employees</label>
+                <input type="number" id="totalEmployees" name="total_employees" value="{{ department.total_employees }}" readonly>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit">
+                    <span>Save Changes</span>
+                    <span class="loading-indicator"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+                <button type="reset">Reset</button>
+            </div>
+        </form>
+    </div>
+    <script src="{{url_for('static', filename='scripts/edit_department.js')}}"></script>
+{% endblock %}

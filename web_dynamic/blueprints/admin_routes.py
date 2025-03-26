@@ -110,18 +110,89 @@ def add_employee():
     return render_template("add_employee.html", **data)
 
 
-@admin_bp.route("/employees/edit", methods=["GET"], strict_slashes=False)
+@admin_bp.route("/employees/edit/<string:employee_id>", methods=["GET", "POST"], strict_slashes=False)
 @role_required(["admin", "hr", "system admin"])
-def edit_employee():
+def edit_employee(employee_id):
     """ Edit Employee """
-    return render_template("edit_employee.html")
+    employee = storage.get(Employee, employee_id)
+    departments = storage.all(Department).values()
+    positions = storage.all(Position).values()
+    supervisors = storage.all(Employee).values()
+
+    if not employee:
+        flash("employee doesn't exist", "error")
+        return render_template("employee_dashboard.html")
+    
+    if request.method == 'POST':
+            employee.first_name = request.form.get('firstName')
+            employee.last_name = request.form.get('lastName')
+            employee.phone_number = request.form.get('phoneNumber')
+            employee.salary = request.form.get('salary')
+            # employee.hire_date =
+            employee.department_id = request.form.get('department_id')
+            employee.position_id = request.form.get('position_id')
+            employee.supervisor_id = request.form.get('supervisor_id')
+            employee.status = request.form.get('status')
+
+            try:
+                employee.save()
+                flash("Employee details updated successfully!", "success")
+
+            except Exception as e:
+                storage.get_session().rollback()
+                flash(f"Error updating employee: {str(e)}", "danger")
+
+            return redirect(url_for('admin.employee_dashboard'))
+    
+
+    return render_template("edit_employee.html",
+                           employee=employee,
+                           departments=departments,
+                           supervisors=supervisors)
+
+
+@admin_bp.route("/employees/view", methods=["GET"], strict_slashes=False)
+def view_employees():
+    """Render the view employees page with dynamic data"""
+    search_query = request.args.get('search', '').strip().lower()
+    filter_status = request.args.get('status', '').strip().lower()
+
+    employees = storage.all(Employee).values()
+
+    # Apply searching
+    if search_query:
+        employees = [emp for emp in employees if search_query in f"{emp.first_name} {emp.last_name}".lower()]
+
+    if filter_status:
+        employees = [emp for emp in employees if emp.status.lower() == filter_status]
+
+    return render_template('view_employee.html', employees=employees)
 
 
 @admin_bp.route("/departments", methods=["GET"], strict_slashes=False)
 @role_required(["admin", "hr", "system admin"])
 def department_dashboard():
     """ Department Management """
-    return render_template("department.html")
+    current_user = get_logged_in_user()
+    user_data = get_user_data()
+
+    departments = storage.all(Department).values()
+
+    department_data = []
+    for dept in departments:
+        manager = storage.get(Employee, dept.manager_id) if dept.manager_id else None
+        employees_count = len([emp for emp in storage.all(Employee).values() if emp.department_id == dept.id])
+
+        department_data.append({
+            "id": dept.id,
+            "name": dept.name,
+            "manager": f"{manager.first_name} {manager.last_name}" if manager else "N/A",
+            "budget": f"${dept.budget:,.2f}",
+            "employees": employees_count
+        })
+    
+
+    return render_template("department.html", departments=department_data, user=user_data)
 
 
 @admin_bp.route("/departments/add", methods=["GET", "POST"], strict_slashes=False)
@@ -173,6 +244,93 @@ def add_department():
         redirect_url = url_for('admin.department_dashboard')  # Set redirect URL
 
     return render_template("add_department.html", managers=get_managers(), user_data=get_user_data(), redirect_url=redirect_url)
+
+
+@admin_bp.route("/departments/edit/<string:dept_id>", methods=["GET", "POST"], strict_slashes=False)
+@role_required(["admin", "hr", "system admin"])
+def edit_department(dept_id):
+    """ Edit Department """
+    redirect_url = None  # Initialize redirect variable
+    department = storage.get(Department, dept_id)
+
+    if not department:
+        flash("Department not found!", "error")
+        return redirect(url_for('admin.department_dashboard'))
+
+    if request.method == "POST":
+        name = request.form.get('name')
+        description = request.form.get('description')
+        manager_id = request.form.get('departmentManager')
+        budget = request.form.get('budget')
+
+        # Check if required fields are provided
+        if not name or not budget or not description or not manager_id:
+            flash("All fields are required!", "error")
+            return render_template("edit_department.html", department=department, managers=get_managers(), user_data=get_user_data())
+
+        # Ensure budget is a valid number
+        try:
+            budget = float(budget)
+            if budget < 0:
+                flash("Budget must be a positive number.", "error")
+                return render_template("edit_department.html", department=department, managers=get_managers(), user_data=get_user_data())
+        except ValueError:
+            flash("Invalid budget amount.", "error")
+            return render_template("edit_department.html", department=department, managers=get_managers(), user_data=get_user_data())
+
+        # Check if another department has the same name
+        existing_department = storage.all(Department).values()
+        for dep in existing_department:
+            if dep.name.lower() == name.lower() and dep.id != dept_id:
+                flash("Another department with this name already exists.", "error")
+                return render_template("edit_department.html", department=department, managers=get_managers(), user_data=get_user_data())
+
+        # Update department details
+        department.name = name
+        department.description = description
+        department.manager_id = manager_id
+        department.budget = budget
+
+        storage.save()
+
+        flash("Department updated successfully!", "success")
+        redirect_url = url_for('admin.department_dashboard')
+
+    return render_template("edit_department.html", department=department, managers=get_managers(), user_data=get_user_data(), redirect_url=redirect_url)
+
+
+
+@admin_bp.route("/departments/delete", methods=["GET", "POST"], strict_slashes=False)
+@role_required(["admin", "hr", "system admin"])
+def delete_department():
+    """ Delete Department by department ID"""
+    current_user = get_logged_in_user()
+    if not current_user:
+        return redirect(url_for("login_page"))
+    
+    dept_id = request.args.get("dept_id")
+    if not dept_id:
+        flash("Invalid department ID!", "danger")
+        return redirect(url_for("admin.department_dashboard"))
+    
+    department = storage.get(Department, dept_id)
+    if not department:
+        flash("Department not found", "danger")
+        return redirect(url_for("admin.department_dashboard"))
+    
+    try:
+        storage.delete(department)
+        storage.save()
+        flash("Department deleted successfully!", "success")
+
+    except Exception as e:
+        storage.get_session().rollback()
+        flash(f"Error deleting department: {str(e)}", "danger")
+
+  
+    return redirect(url_for("admin.department_dashboard"))
+
+
 
 
 @admin_bp.route("/reports", methods=["GET"], strict_slashes=False)

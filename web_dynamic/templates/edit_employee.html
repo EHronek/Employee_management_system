@@ -10,45 +10,66 @@
 {% block content %}
     <!-- Form Container -->
     <div class="form-container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <div id="liveToast" class="toast show bg-success text-white" role="alert">
+                        <div class="toast-body">
+                            {% for category, message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    setTimeout(function() {
+                        window.location.href = "{{ url_for('admin.department_dashboard') }}";
+                    }, 2000);
+                </script>
+            {% endif %}
+        {% endwith %}
+
         <form id="editEmployeeForm">
             <!-- First Name -->
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" placeholder="Enter first name" value="John" required>
+                <input type="text" id="firstName" name="firstName" placeholder="Enter first name" value="{{ employee.first_name }}" required>
                 <div class="error-message">First name is required.</div>
             </div>
 
             <!-- Last Name -->
             <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" placeholder="Enter last name" value="Doe" required>
+                <input type="text" id="lastName" name="lastName" placeholder="Enter last name" value="{{ employee.last_name }}" required>
                 <div class="error-message">Last name is required.</div>
             </div>
 
             <!-- Work Email -->
             <div class="form-group">
                 <label for="workEmail">Work Email</label>
-                <input type="email" id="workEmail" name="workEmail" placeholder="Enter work email" value="john.doe@company.com" disabled>
+                <input type="email" id="workEmail" name="workEmail" placeholder="Enter work email" value="{{ employee.work_email }}" disabled>
             </div>
 
             <!-- Phone Number -->
             <div class="form-group">
                 <label for="phoneNumber">Phone Number</label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" value="+1234567890" required>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" value="{{ employee.phone_number }}" required>
                 <div class="error-message">Phone number is required.</div>
             </div>
 
             <!-- Salary -->
             <div class="form-group">
                 <label for="salary">Salary</label>
-                <input type="number" id="salary" name="salary" placeholder="Enter salary" value="75000" required>
+                <input type="number" id="salary" name="salary" placeholder="Enter salary" value="{{ employee.salary }}" required>
                 <div class="error-message">Salary is required.</div>
             </div>
 
             <!-- Hire Date -->
             <div class="form-group">
                 <label for="hireDate">Hire Date</label>
-                <input type="date" id="hireDate" name="hireDate" value="2020-01-15" disabled>
+                <input type="date" id="hireDate" name="hireDate" value="employee.hire_date" disabled>
             </div>
 
             <!-- Department -->
@@ -56,10 +77,9 @@
                 <label for="department">Department</label>
                 <select id="department" name="department" class="searchable-dropdown" required>
                     <option value="">Select department</option>
-                    <option value="hr" selected>HR</option>
-                    <option value="it">IT</option>
-                    <option value="finance">Finance</option>
-                    <option value="marketing">Marketing</option>
+                    {% for department in departments %}
+                        <option value="{{ department.id }}" {% if department.id == employee.department_id %} selected {% endif %}>{{ department.name }}</option>
+                    {% endfor %}
                 </select>
                 <div class="error-message">Department is required.</div>
             </div>
@@ -67,12 +87,11 @@
             <!-- Position -->
             <div class="form-group">
                 <label for="position">Position</label>
-                <select id="position" name="position" class="searchable-dropdown" required>
+                <select id="position" name="position_id" class="searchable-dropdown" required>
                     <option value="">Select position</option>
-                    <option value="manager" selected>Manager</option>
-                    <option value="developer">Developer</option>
-                    <option value="analyst">Analyst</option>
-                    <option value="designer">Designer</option>
+                    {% for position in positions %}
+                    <option value="{{ position.id }}" {% if position.id == employee.position_id %} selected {% endif %}>{{position.title}}</option>
+                    {% endfor %}
                 </select>
                 <div class="error-message">Position is required.</div>
             </div>
@@ -82,8 +101,9 @@
                 <label for="supervisor">Supervisor</label>
                 <select id="supervisor" name="supervisor" class="searchable-dropdown" required>
                     <option value="">Select supervisor</option>
-                    <option value="jane-smith" selected>Jane Smith</option>
-                    <option value="alice-johnson">Alice Johnson</option>
+                    {% for supervisor in supervisors %}
+                        <option value="{{ supervisor.id }}" {% if supervisor.id == employee.supervisor_id %}selected{% endif %}>{{ supervisor.first_name ~ " " ~ supervisor.last_name }}</option>
+                    {% endfor %}
                 </select>
                 <div class="error-message">Supervisor is required.</div>
             </div>
@@ -93,13 +113,13 @@
                 <label>Employment Status</label>
                 <div class="radio-group">
                     <label>
-                        <input type="radio" name="employmentStatus" value="full-time" checked> Full-Time
+                        <input type="radio" name="status" value="full-time" {% if employee.status == 'full-time' %}checked{% endif %}> Full-Time
                     </label>
                     <label>
-                        <input type="radio" name="employmentStatus" value="part-time"> Part-Time
+                        <input type="radio" name="status" value="part-time" {% if employee.status == 'part-time'%}checked{% endif %}> Part-Time
                     </label>
                     <label>
-                        <input type="radio" name="employmentStatus" value="contract"> Contract
+                        <input type="radio" name="status" value="contract" {% if employee.status == 'contract' %}checked{% endif %}> Contract
                     </label>
                 </div>
                 <div class="error-message">Employment status is required.</div>
@@ -119,5 +139,9 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!--     <script src="{{ url_for('static', filename='scripts/edit_employee.js') }}"></script>
  -->
-    
+    <script>
+        $(document).ready(function() {
+            $('.searchable-dropdown').select2();
+        });
+    </script>
 {% endblock %}

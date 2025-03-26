@@ -16,18 +16,21 @@
 </head>
 <body>
     <!-- Sidebar Navigation -->
-    <div class="nav-links">
-        <a href="{{ url_for('dashboard') }}" class="nav-link"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
-        <a href="{{ url_for('attendance') }}" class="nav-link"><i class="fas fa-calendar-check"></i>Attendance</a>
-        <a href="{{ url_for('leave_requests') }}" class="nav-link"><i class="fas fa-calendar-times"></i>Leave Requests</a>
-        <a href="{{ url_for('payroll') }}" class="nav-link"><i class="fas fa-money-bill"></i>Payroll</a>
-        <a href="{{ url_for('performance_reviews') }}" class="nav-link"><i class="fas fa-star"></i>Performance Reviews</a>
-        <a href="{{ url_for('training_development') }}" class="nav-link"><i class="fas fa-graduation-cap"></i>Training & Development</a>
-        <a href="{{ url_for('announcements') }}" class="nav-link"><i class="fas fa-bullhorn"></i>Company Announcements</a>
-        <a href="{{ url_for('profile_settings') }}" class="nav-link"><i class="fas fa-user-circle"></i>Profile & Settings</a>
-        <a href="{{ url_for('logout') }}" class="nav-link"><i class="fas fa-sign-out-alt"></i>Logout</a>
+    <div class="sidebar">
+        <div class="logo">EMS</div>
+        <div class="nav-links">
+            <a href="#" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            <a href="#"><i class="fas fa-calendar-check"></i>Attendance</a>
+            <a href="#"><i class="fas fa-calendar-times"></i>Leave Requests</a>
+            <a href="#"><i class="fas fa-money-bill"></i>Payroll</a>
+            <a href="#"><i class="fas fa-star"></i>Performance Reviews</a>
+            <a href="#"><i class="fas fa-graduation-cap"></i>Training & Development</a>
+            <a href="#"><i class="fas fa-bullhorn"></i>Company Announcements</a>
+            <a href="#"><i class="fas fa-user-circle"></i>Profile & Settings</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
     </div>
-    
+
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
@@ -41,36 +44,5 @@
 
         {% block content %}{% endblock %}
 
-    
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                // Get the current page URL
-                let currentUrl = window.location.href;
-        
-                // Remove 'active' from all links, then check which one matches current URL
-                $(".nav-link").each(function () {
-                    let linkUrl = $(this).attr("href");
-        
-                    // Check if the current URL contains the link URL
-                    if (currentUrl.includes(linkUrl)) {
-                        $(".nav-link").removeClass("active"); // Remove active from all
-                        $(this).addClass("active"); // Add active to the matching link
-                    }
-                });
-        
-                // Handle clicks and store in localStorage
-                $(".nav-link").click(function () {
-                    localStorage.setItem("activeNav", $(this).attr("href"));
-                });
-        
-                // Get stored active link from localStorage and highlight it
-                let activeNav = localStorage.getItem("activeNav");
-                if (activeNav) {
-                    $(".nav-link").removeClass("active"); // Remove from all
-                    $('.nav-link[href="' + activeNav + '"]').addClass("active"); // Set active
-                }
-            });
-        </script>
 </body>
 </html>

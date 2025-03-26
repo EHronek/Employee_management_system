@@ -14,7 +14,7 @@
     </div> -->
 
     <!-- Search & Filters -->
-    <div class="search-filter">
+    <!-- <div class="search-filter">
         <input type="text" placeholder="Search employees...">
         <select>
             <option value="">Filter by Status</option>
@@ -23,6 +23,18 @@
             <option value="pending">Pending Approval</option>
         </select>
         <button>Search</button>
+    </div> -->
+    <div class="search-filter">
+        <form method="GET" action="{{ url_for('admin.view_employees') }}">
+            <input type="text" name="search" placeholder="Search employees..." value="{{ request.args.get('search', '') }}">
+            <select name="status">
+                <option value="">Filter by Status</option>
+                <option value="active" {% if request.args.get('status') == 'active' %}selected{% endif %}>Active</option>
+                <option value="on-leave" {% if request.args.get('status') == 'on-leave' %}selected{% endif %}>On Leave</option>
+                <option value="pending" {% if request.args.get('status') == 'pending' %}selected{% endif %}>Pending Approval</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
     </div>
 
     <!-- Employee Table -->
@@ -42,15 +54,16 @@
                 </tr>
             </thead>
             <tbody>
+                {% for employee in employees %}
                 <tr>
                     <td><input type="checkbox"></td>
-                    <td>001</td>
-                    <td>John Doe</td>
-                    <td>john.doe@company.com</td>
-                    <td>+1234567890</td>
-                    <td>HR</td>
-                    <td>Manager</td>
-                    <td class="status-active">Active</td>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.first_name ~ " " ~ employee.last_name }}</td>
+                    <td>{{ employee.work_email }}</td>
+                    <td>{{ employee.phone_number }}</td>
+                    <td>{{ employee.department.name if employee.department else 'N/A' }}</td>
+                    <td>{{ employee.postion }}</td>
+                    <td class="status-{{ employee.status | lower }}">{{ employee.status }}</td>
                     <td class="actions">
                         <button title="Edit"><i class="fas fa-edit"></i></button>
                         <button title="Delete"><i class="fas fa-trash"></i></button>
@@ -58,23 +71,7 @@
                         <button title="View Profile"><i class="fas fa-eye"></i></button>
                     </td>
                 </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>002</td>
-                    <td>Jane Smith</td>
-                    <td>jane.smith@company.com</td>
-                    <td>+1234567891</td>
-                    <td>IT</td>
-                    <td>Developer</td>
-                    <td class="status-on-leave">On Leave</td>
-                    <td class="actions">
-                        <button title="Edit"><i class="fas fa-edit"></i></button>
-                        <button title="Delete"><i class="fas fa-trash"></i></button>
-                        <button title="Send Email"><i class="fas fa-envelope"></i></button>
-                        <button title="View Profile"><i class="fas fa-eye"></i></button>
-                    </td>
-                </tr>
-                <!-- Add more rows here -->
+                {% endfor %}
             </tbody>
         </table>
     </div>
