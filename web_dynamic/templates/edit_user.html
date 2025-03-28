@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Management System | Employee Login</title>
+    <title>WorkFlow Pro | Edit User</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -19,10 +19,8 @@
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
-            overflow: hidden;
         }
 
-        /* Navigation Bar */
         .navbar {
             position: fixed;
             top: 0;
@@ -44,43 +42,32 @@
             text-decoration: none;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
         .nav-links a {
             text-decoration: none;
             color: #1e293b;
             font-weight: 500;
-            transition: color 0.3s;
+            margin-left: 20px;
         }
 
         .nav-links a:hover {
             color: #2563eb;
         }
 
-        /* Login Container */
-        .login-container {
+        .form-container {
             background: rgba(255, 255, 255, 0.95);
-            padding: 3rem;
+            padding: 2.5rem;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             text-align: center;
+            margin-top: 80px;
         }
 
-        .login-container h1 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: #1e293b;
-        }
-
-        .flash-messages {
-            color: red;
-            font-size: 0.9rem;
+        .form-container h1 {
+            font-size: 1.8rem;
             margin-bottom: 1rem;
+            color: #1e293b;
         }
 
         .input-group {
@@ -95,7 +82,8 @@
             font-weight: 500;
         }
 
-        .input-group input {
+        .input-group input,
+        .input-group select {
             width: 100%;
             padding: 1rem;
             border: 2px solid #e2e8f0;
@@ -104,13 +92,14 @@
             transition: all 0.3s;
         }
 
-        .input-group input:focus {
+        .input-group input:focus,
+        .input-group select:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
             outline: none;
         }
 
-        .login-button {
+        .submit-button {
             width: 100%;
             background: #2563eb;
             color: white;
@@ -123,41 +112,22 @@
             transition: transform 0.3s;
         }
 
-        .login-button:hover {
+        .submit-button:hover {
             transform: translateY(-2px);
-        }
-
-        .signup-link {
-            margin-top: 1.5rem;
-            color: #64748b;
-        }
-
-        .signup-link a {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .signup-link a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
     <nav class="navbar">
         <a href="#" class="logo">Employee Management System</a>
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Sign Up</a>
+            <a href="{{ url_for('admin.admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin.list_users') }}">Users</a>
         </div>
     </nav>
 
-    <!-- Login Container -->
-    <div class="login-container">
-        <h1>Employee Login</h1>
-
-        <!-- Flash Messages -->
+    <div class="form-container">
+        <h1>Edit User</h1>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -169,24 +139,46 @@
             {% endif %}
         {% endwith %}
 
-
-        <form id="loginForm" action="{{ url_for('login_page') }}" method="POST">
+        <form action="{{ url_for('admin.edit_user', user_id=user.id) }}" method="POST">
             <div class="input-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
             </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="login-button">Sign In</button>
-        </form>
-        <p class="signup-link">Don't have an account? <a href="#">Sign Up</a></p>
-    </div>
 
-    <script>
-        // Form Submission Handling
-       
-    </script>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <div class="input-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                    <option value="employee" {% if user.role == 'employee' %}selected{% endif %}>Employee</option>
+                    <option value="manager" {% if user.role == 'manager' %}selected{% endif %}>Manager</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="employee_id">Assign Employee</label>
+                <select id="employee_id" name="employee_id" required>
+                    <option value="" disabled>Select an employee</option>
+                    {% for employee in employees %}
+                        <option value="{{ employee.id }}" {% if user.employee_id == employee.id %}selected{% endif %}>{{ employee.first_name ~ " " ~ employee.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" required>
+                    <option value="active" {% if user.status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if user.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit-button">Update User</button>
+        </form>
+    </div>
 </body>
 </html>

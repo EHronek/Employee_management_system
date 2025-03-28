@@ -6,6 +6,9 @@ from models.department import Department
 from models.position import Position
 from models.attendance import Attendance
 from web_dynamic.helper_function import get_logged_in_user, get_managers, get_user_data
+from datetime import datetime
+from models.leave_request import LeaveRequest
+from models.user import User
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -45,7 +48,55 @@ def admin_dashboard():
 @role_required(["admin", "hr", "system admin"])
 def employee_dashboard():
     """ Employee Management """
-    return render_template("employee_dashboard.html")
+    sess = storage.get_session()
+    user = get_logged_in_user()
+    user_data = get_user_data()
+    
+    if not user:
+        flash("You must be logged in to access the dashboard", "error")
+        return redirect(url_for('login'))
+    
+    all_employees = storage.all(Employee).values()
+    all_leave_requests = storage.all(LeaveRequest).values()
+
+    total_employees = len(all_employees)
+
+    active_employees = sum(1 for emp in all_employees if emp.status == 'active')
+
+    on_leave = sum(1 for leave in all_leave_requests if leave.status == 'approved')
+
+    pending_approvals = sum(1 for leave in all_leave_requests if leave.status == 'pending')
+    
+    # compute department-wise employee count
+    department_counts = {}
+    for emp in all_employees:
+        department = emp.department.name if emp.department else "Unknown"
+        department_counts[department] = department_counts.get(department, 0) + 1
+
+    recent_notifications = [
+        {"message": "Upcoming Performance Reviews", "time": "2 days ago"},
+        {"message": "Pending Payroll Processing", "time": "1 day ago"},
+        {"message": "Employee Contract Expiry Reminders", "time": "5 hours ago"}
+    ]
+
+    recent_activities = [
+        {"message": "New Employee Registration: John Doe", "time": "3 hours ago"},
+        {"message": "Salary Updated for Jane Smith", "time": "1 day ago"},
+        {"message": "Performance Review Feedback Submitted", "time": "2 days ago"}
+    ]
+
+    return render_template(
+        "employee_dashboard.html",
+        active_employees=active_employees,
+        on_leave=on_leave,
+        pending_approvals=pending_approvals,
+        department_data=department_counts,
+        recent_notifications=recent_notifications,
+        recent_activities=recent_activities,
+        employees=all_employees,
+        total_employees=total_employees,
+        department=department
+        )
 
 
 @admin_bp.route("/employees/add", methods=["GET", "POST"], strict_slashes=False)
@@ -128,8 +179,20 @@ def edit_employee(employee_id):
             employee.last_name = request.form.get('lastName')
             employee.phone_number = request.form.get('phoneNumber')
             employee.salary = request.form.get('salary')
-            # employee.hire_date =
+            
+            # Handle hire date update
+            hire_date_str = request.form.get("hireDate")
+            if hire_date_str:
+                try:
+                    employee.hire_date = datetime.strptime(hire_date_str, "%Y-%m-%d")
+                except:
+                    flash("Invalid date format", "error")
+                    return redirect(url_for("admin.edit_employee", employee_id=employee.id))
+            
             employee.department_id = request.form.get('department_id')
+
+
+
             employee.position_id = request.form.get('position_id')
             employee.supervisor_id = request.form.get('supervisor_id')
             employee.status = request.form.get('status')
@@ -142,13 +205,14 @@ def edit_employee(employee_id):
                 storage.get_session().rollback()
                 flash(f"Error updating employee: {str(e)}", "danger")
 
-            return redirect(url_for('admin.employee_dashboard'))
+            # return redirect(url_for('admin.employee_dashboard'))
     
 
     return render_template("edit_employee.html",
                            employee=employee,
                            departments=departments,
-                           supervisors=supervisors)
+                           supervisors=supervisors,
+                           positions=positions)
 
 
 @admin_bp.route("/employees/view", methods=["GET"], strict_slashes=False)
@@ -167,6 +231,20 @@ def view_employees():
         employees = [emp for emp in employees if emp.status.lower() == filter_status]
 
     return render_template('view_employee.html', employees=employees)
+
+
+@admin_bp.route("employees/delete/<string:employee_id>", methods=["POST"], strict_slashes=False)
+def delete_employee(employee_id):
+    employee = storage.get(Employee, employee_id)
+
+    if not employee:
+        flash("Employee not found", "danger")
+        return redirect(url_for('admin.view_employee'))
+    
+    storage.delete(employee)
+    storage.save()
+
+    flash("employee deleted successfully", "success")
 
 
 @admin_bp.route("/departments", methods=["GET"], strict_slashes=False)
@@ -330,6 +408,87 @@ def delete_department():
   
     return redirect(url_for("admin.department_dashboard"))
 
+
+@admin_bp.route("/create_user", methods=["GET", "POST"], strict_slashes=False)
+@role_required(["admin", "hr", "system admin"])
+def create_user():
+    """Creates a new user"""
+    employees = storage.all(Employee).values()
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get("password")
+        role = request.form.get('role')
+        employee_id = request.form.get('employee_id')
+        status =request.form.get('status')
+
+        if not all([username, password, role, employee_id]):
+            flash("All fields are required", "danger")
+            return redirect(url_for('admin.create_user'))
+        
+        existing_user = storage.get_user_by_username(username)
+        if existing_user:
+            flash("username already exists", "danger")
+            return redirect(url_for('admin.create_user'))
+        
+        new_user = User(username=username, role=role, employee_id=employee_id)
+        new_user.password = new_user._hash_password(password)
+        storage.new(new_user)
+        storage.save()
+        flash('User created successfully', 'success')
+        return redirect(url_for('admin.admin_dashboard'))
+
+    
+    return render_template('create_user.html', employees=employees)
+
+
+@admin_bp.route("/edit_user<string:user_id>", methods=["GET"], strict_slashes=False)
+@role_required(["admin", "hr", "system admin"])
+def edit_user(user_id):
+    """edits an existing user data"""
+    user = storage.get(User, user_id)
+    if not user:
+        flash("User not found", 'danger')
+        return redirect(url_for('admin.admin_dashboard'))
+    
+    if request.method == "POST":
+        username = request.form.get('username')
+        role = request.form.get('role')
+        employee_id = request.form.get('employee_id')
+        status = request.form.get('status')
+
+        if not all([username, role, employee_id, status]):
+            flash("All fields are required", "danger")
+            return redirect(url_for('edit_user', user_id=user_id))
+        
+        user.username = username
+        user.role = role
+        user.employee_id = employee_id
+        user.status = status
+        storage.save()
+        flash("user updated successfully", "success")
+        return redirect(url_for("admin.admin_dashboard"))
+    
+    employees = storage.all(Employee).values()
+    return render_template('edit_user.html', user=user, employees=employees)
+
+
+@admin_bp.route('/users', methods=['GET'])
+def list_users():
+    users = storage.all(User).values()  # Fetch all users from the database
+    return render_template('list_users.html', users=users)
+
+
+@admin_bp.route('/delete_user/<string:user_id>', methods=['POST'])
+def delete_user(user_id):
+    """Handles deleting a user"""
+    user = User.query.get(user_id)
+    if user:
+        storage.delete(user)
+        storage.save()
+        flash("User deleted successfully", "success")
+    else:
+        flash("User not found", "error")
+    return redirect(url_for('admin.list_users'))
 
 
 

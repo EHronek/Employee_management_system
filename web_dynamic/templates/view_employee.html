@@ -24,6 +24,27 @@
         </select>
         <button>Search</button>
     </div> -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div id="liveToast" class="toast show bg-success text-white" role="alert">
+                    <div class="toast-body">
+                        {% for category, message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{{ url_for('admin.view_employees') }}";
+                }, 2000);
+            </script>
+        {% endif %}
+    {% endwith %}
+
     <div class="search-filter">
         <form method="GET" action="{{ url_for('admin.view_employees') }}">
             <input type="text" name="search" placeholder="Search employees..." value="{{ request.args.get('search', '') }}">
@@ -65,8 +86,9 @@
                     <td>{{ employee.postion }}</td>
                     <td class="status-{{ employee.status | lower }}">{{ employee.status }}</td>
                     <td class="actions">
-                        <button title="Edit"><i class="fas fa-edit"></i></button>
-                        <button title="Delete"><i class="fas fa-trash"></i></button>
+                        <a href="{{ url_for('admin.edit_employee', employee_id=employee.id) }}"><button title="Edit"><i class="fas fa-edit"></i></button></a>
+                        <a href="{{ url_for('admin.delete_employee', employee_id=employee.id) }}"><button title="Delete"><i class="fas fa-trash"></i></button></a>
+                        <a href="{{ url_for('admin.delete_employee', employee_id=employee.id) }}"><button title="Delete"><i class="fas fa-user-plus"></i></button></a>
                         <button title="Send Email"><i class="fas fa-envelope"></i></button>
                         <button title="View Profile"><i class="fas fa-eye"></i></button>
                     </td>

@@ -1,15 +1,20 @@
 {% extends "employee_base_layout.html" %}
+
 {% block title%}Employee Dashboard{% endblock%}
 
 {% block header %} Dashboard{% endblock %}
+
 {% block profile %} 
-    <!-- Employee Profile -->
     <div class="employee-profile">
         <img src="employee-avatar.jpg" alt="Employee Avatar">
         <div class="details">
-            <h2>Jane Doe</h2>
-            <p>Manager | HR Department</p>
-            <p>Status: <span class="status-active">Active</span></p>
+            <h2>{{ employee.first_name ~ " " ~ employee.last_name }}</h2>
+            <p>{{ employee.position.title }} | {{ employee.department.name }}</p>
+            <p>Status: 
+                <span class="{% if employee.status == 'active' %}status-active{% else %}status-inactive{% endif %}">
+                    {{ employee.status }}
+                </span>
+            </p>
         </div>
     </div>
 {% endblock %}
@@ -18,29 +23,29 @@
 <!-- Overview Cards -->
 <div class="overview">
     <div class="overview-card">
-        <h3>120</h3>
+        <h3>{{ attendance_data.total_hours }}</h3>
         <p>Total Hours Worked</p>
     </div>
     <div class="overview-card">
-        <h3>15</h3>
+        <h3>{{ attendance_data.leave_days_remaining }}</h3>
         <p>Leave Days Remaining</p>
     </div>
     <div class="overview-card">
-        <h3>$7,500</h3>
-        <p>Last Salary Payment</p>
+        <h3>${{ attendance_data.payroll.net_pay }}</h3>
+        <p>Last Salary Payment ({{ attendance_data.payroll.payment_date }})</p>
     </div>
     <div class="overview-card">
-        <h3>4.5/5</h3>
+        <h3>{{ attendance_data.performance_rating }}/5</h3>  <!-- Fixed the key -->
         <p>Performance Rating</p>
     </div>
 </div>
 
 <!-- Quick Actions -->
 <div class="quick-actions">
-    <button><i class="fas fa-clock"></i>Check In/Out</button>
-    <button><i class="fas fa-calendar-plus"></i>Request Leave</button>
-    <button><i class="fas fa-file-invoice"></i>View Payslip</button>
-    <button><i class="fas fa-user-edit"></i>Update Profile</button>
+    <button><i class="fas fa-clock"></i> Check In/Out</button>
+    <button><i class="fas fa-calendar-plus"></i> Request Leave</button>
+    <button><i class="fas fa-file-invoice"></i> View Payslip</button>
+    <button><i class="fas fa-user-edit"></i> Update Profile</button>
 </div>
 
 <!-- Data Visualization -->
@@ -58,20 +63,13 @@
 <!-- Recent Notifications -->
 <div class="notifications">
     <h2>Recent Notifications</h2>
+    {% for notification in notifications %}
     <div class="notification-card">
-        <p>New Company Announcement: Annual Review Meeting</p>
-        <p class="time">2 hours ago</p>
+        <p>{{ notification.message }}</p>
+        <p class="time">{{ notification.time }}</p>
     </div>
-    <div class="notification-card">
-        <p>Leave Request Approved: 3 Days (Dec 15 - Dec 17)</p>
-        <p class="time">1 day ago</p>
-    </div>
-    <div class="notification-card">
-        <p>Performance Review Feedback Submitted</p>
-        <p class="time">3 days ago</p>
-    </div>
+    {% endfor %}
 </div>
-</div>
-<script src="{{ url_for('static', filename='scripts/employee_base.js')}}"></script>
 
+<script src="{{ url_for('static', filename='scripts/employee_base.js') }}"></script>
 {% endblock %}
