@@ -19,10 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     checkInOutButton.innerHTML = '<i class="fas fa-clock"></i> Check Out';
                     checkInOutButton.setAttribute("data-action", "checkout");
                     checkInStatus.textContent = "You are currently checked in.";
+                    location.reload();
                 } else {
                     checkInOutButton.innerHTML = '<i class="fas fa-clock"></i> Check In';
                     checkInOutButton.setAttribute("data-action", "checkin");
                     checkInStatus.textContent = "You are currently checked out.";
+                    location.reload();
                 }
             } else {
                 alert(data.message);

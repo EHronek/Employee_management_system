@@ -133,7 +133,7 @@ def employee_attendance():
                 response["success"] = True
                 response["message"] = "Check-out successful!"
 
-        return jsonify(response)
+        return redirect(url_for('employee.employee_attendance'))
 
     # Fetch attendance history
     attendance_records = [
@@ -192,7 +192,7 @@ def employee_leave_request():
         start_date = request.form.get("startDate")
         end_date = request.form.get("endDate")
         reason = request.form.get("reason")
-        document = request.files.get("document")  # Handle file upload (optional)
+        # document = request.files.get("document")  # Handle file upload (optional)
 
         # Validate input
         if not leave_type or not start_date or not end_date or not reason:
@@ -223,7 +223,7 @@ def employee_leave_request():
             return redirect(url_for("employee.employee_leave_request"))
 
         # Handle file upload (if a document is provided)
-        upload_dir = "static/uploads"
+        """ upload_dir = "static/uploads"
         if not os.path.exists(upload_dir):
             os.makedirs(upload_dir)
 
@@ -233,7 +233,7 @@ def employee_leave_request():
         if document and document.filename:
             document_path = f"uploads/{document.filename}"
             document.save(f"static/{document_path}")  # Save file in static/uploads
-
+        """
         # Create new LeaveRequest object
         new_leave = LeaveRequest(
             employee_id=employee_id,
@@ -241,7 +241,6 @@ def employee_leave_request():
             start_date=start_date,
             end_date=end_date,
             reason=reason,
-            document=document_path,
             status="pending",
             leave_balance=new_balance
         )
@@ -284,7 +283,6 @@ def cancel_leave(leave_id):
 @employee_bp.route('/leave/download/<filename>')
 def download_file(filename):
     return send_from_directory("static/uploads", filename, as_attachment=True)
-
 
 
 @employee_bp.route("/announcements", methods=["GET"], strict_slashes=False)

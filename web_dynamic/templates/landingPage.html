@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Employee Management Solution</title>
+    <title>EmpowerHR | Employee Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,17 +26,32 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
+            z-index: 100;
         }
 
         .nav-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
+            color: #2563eb;
+        }
+
+        .nav-links a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
             color: #2563eb;
         }
 
@@ -56,20 +72,26 @@
             font-size: 1.2rem;
             margin-bottom: 2rem;
             opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-button {
+            display: inline-block;
             background: white;
             color: #2563eb;
             padding: 1rem 2rem;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
         /* Features Section */
@@ -81,12 +103,25 @@
         .section-title {
             text-align: center;
             margin-bottom: 4rem;
+            font-size: 2.5rem;
+            color: #1e293b;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #64748b;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .feature-card {
@@ -94,11 +129,13 @@
             padding: 2rem;
             border-radius: 15px;
             text-align: center;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
         .feature-icon {
@@ -107,22 +144,72 @@
             margin-bottom: 1rem;
         }
 
-        /* Benefits Section */
-        .benefits {
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .feature-card p {
+            color: #64748b;
+        }
+
+        /* About Section */
+        .about {
             padding: 6rem 5%;
             background: white;
+            text-align: center;
         }
 
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .benefit-card {
-            padding: 2rem;
-            background: #f8fafc;
-            border-radius: 15px;
+        .about-text {
+            margin-bottom: 2rem;
+            text-align: left;
+            line-height: 1.8;
+            color: #4b5563;
+        }
+
+        .team {
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 0.5rem;
+            color: #2563eb;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .github-btn {
+            display: inline-block;
+            background: #1e293b;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+
+        .github-btn:hover {
+            background: #0f172a;
         }
 
         /* Demo Section */
@@ -141,6 +228,12 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
+        .demo-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         /* Footer */
         footer {
             background: #1e293b;
@@ -148,82 +241,132 @@
             padding: 4rem 5%;
             text-align: center;
         }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #2563eb;
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-content">
-            <div class="logo">EMS PRO</div>
+            <div class="logo">EmpowerHR</div>
             <div class="nav-links">
-                <a href="{{ url_for('admin.admin_dashboard') }}">Admin</a>
-                <a href="{{ url_for('admin.employee_dashboard') }}">Employee</a>
-                <a href="http://0.0.0.0:5001/login">Login</a>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
                 <a href="#demo">Demo</a>
+                <a href="{{ url_for('login_page') }}" class="cta-button" style="padding: 0.5rem 1.5rem;">Login</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Transform Your HR Operations</h1>
-        <p>The all-in-one platform for seamless employee management, attendance tracking, and HR automation</p>
-        <a href="{{ url_for('create_user') }}" class="cta-button">Start Free Trial</a>
+        <h1>Modern Employee Management Made Simple</h1>
+        <p>Streamline HR processes, track attendance, and manage your workforce efficiently with our all-in-one platform</p>
+        <a href="{{ url_for('sign_up') }}" class="cta-button">Get Started for Free</a>
     </section>
 
     <!-- Features Section -->
     <section class="features" id="features">
-        <h2 class="section-title">Powerful Features</h2>
+        <h2 class="section-title">Key Features</h2>
+        <p class="section-subtitle">Everything you need to manage your employees effectively</p>
         <div class="features-grid">
             <div class="feature-card">
-                <i class="fas fa-users-cog feature-icon"></i>
-                <h3>HR Automation</h3>
-                <p>Automate onboarding, leave management, and document workflows with smart automation</p>
+                <div class="feature-icon">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+                <h3>Time & Attendance</h3>
+                <p>Automated tracking with facial recognition, geofencing, and real-time reporting to eliminate time theft</p>
             </div>
             <div class="feature-card">
-                <i class="fas fa-user-tie feature-icon"></i>
-                <h3>Employee Management</h3>
-                <p>Centralized employee database with performance tracking and role management</p>
+                <div class="feature-icon">
+                    <i class="fas fa-file-signature"></i>
+                </div>
+                <h3>Leave Management</h3>
+                <p>Employees request time off, managers approve with one click, and everything syncs with payroll</p>
             </div>
             <div class="feature-card">
-                <i class="fas fa-calendar-check feature-icon"></i>
-                <h3>Smart Attendance</h3>
-                <p>Real-time tracking with facial recognition, geofencing, and AI-powered insights</p>
+                <div class="feature-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3>HR Analytics</h3>
+                <p>Powerful dashboards show turnover rates, overtime trends, and department performance metrics</p>
             </div>
         </div>
     </section>
 
-    <!-- Benefits Section -->
-    <section class="benefits" id="benefits">
-        <h2 class="section-title">Why Choose WorkFlow Pro?</h2>
-        <div class="benefits-grid">
-            <div class="benefit-card">
-                <h3><i class="fas fa-clock"></i> 70% Time Saved</h3>
-                <p>Automate repetitive tasks and focus on strategic HR initiatives</p>
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2 class="section-title">Our Story</h2>
+        <div class="about-content">
+            <p class="about-text">
+                After spending years in HR departments drowning in paperwork and outdated systems, we knew there had to be a better way. 
+                EmpowerHR was born during my time at ALX as a portfolio project, but it quickly evolved into a passion. 
+                The 3-month development journey taught me how to balance user needs with technical constraints, resulting in this 
+                streamlined solution that real HR teams actually want to use.
+            </p>
+            <p class="about-text">
+                This project combines my experience in human resources with cutting-edge technology to solve real pain points 
+                I've witnessed firsthand in the workplace.
+            </p>
+            
+            <div class="team">
+                <h3>Meet the Creator</h3>
+                <div class="team-member">
+                    <h4>Your Name</h4>
+                    <p>Full Stack Developer & HR Specialist</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/emmanuel-hronek-a75973276/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/EHronek/" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://x.com/EHronek64" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="benefit-card">
-                <h3><i class="fas fa-shield-alt"></i> Compliance Made Easy</h3>
-                <p>Stay updated with automatic compliance tracking and alerts</p>
-            </div>
-            <div class="benefit-card">
-                <h3><i class="fas fa-chart-line"></i> Real-time Analytics</h3>
-                <p>Make data-driven decisions with comprehensive dashboards</p>
-            </div>
+            
+            <a href="https://github.com/EHronek/Employee_management_system/" class="github-btn" target="_blank">
+                <i class="fab fa-github"></i> View Source Code
+            </a>
         </div>
     </section>
 
     <!-- Demo Section -->
     <section class="demo" id="demo">
-        <h2 class="section-title">See It In Action</h2>
-        <p>Experience our intuitive dashboard and powerful features</p>
+        <h2 class="section-title">See EmpowerHR in Action</h2>
+        <p>Our intuitive dashboard puts all employee data at your fingertips</p>
         <div class="demo-image">
-            <!-- Add dashboard screenshot here -->
-            <img src="dashboard-mockup.jpg" alt="WorkFlow Pro Dashboard" style="width:100%">
+            <!-- Replace with actual dashboard screenshot -->
+            <img src="{{ url_for('static', filename='images/admin-dashboard.png') }}" alt="EmpowerHR Dashboard Preview">
         </div>
     </section>
 
     <footer>
-        <p>© 2025 All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="#demo">Demo</a>
+            <a href="mailto:contact@empowerhr.com">Contact</a>
+        </div>
+        <p class="copyright">© 2025 EmpowerHR. All rights reserved.</p>
     </footer>
 </body>
 </html>
