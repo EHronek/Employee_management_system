@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkFlow Pro | Edit User</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -131,11 +133,21 @@
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <div id="liveToast" class="toast show bg-success text-white" role="alert">
+                        <div class="toast-body">
+                            {% for category, message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
+
+                <script>
+                    setTimeout(function() {
+                        window.location.href = "{{ url_for('admin.edit_user', user_id=user.id) }}";
+                    }, 2000);
+                </script>
             {% endif %}
         {% endwith %}
 
@@ -145,10 +157,10 @@
                 <input type="text" id="username" name="username" value="{{ user.username }}" required>
             </div>
 
-            <div class="input-group">
+           <!--  <div class="input-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="{{ user.email }}" required>
-            </div>
+            </div> -->
 
             <div class="input-group">
                 <label for="role">Role</label>
@@ -161,8 +173,8 @@
 
             <div class="input-group">
                 <label for="employee_id">Assign Employee</label>
-                <select id="employee_id" name="employee_id" required>
-                    <option value="" disabled>Select an employee</option>
+                <select id="employee_id" name="employee_id">
+                    <option value="" >Select an employee</option>
                     {% for employee in employees %}
                         <option value="{{ employee.id }}" {% if user.employee_id == employee.id %}selected{% endif %}>{{ employee.first_name ~ " " ~ employee.last_name }}</option>
                     {% endfor %}

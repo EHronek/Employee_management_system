@@ -1,42 +1,33 @@
-// Check-In/Check-Out Logic
-const checkInOutButton = document.getElementById('checkInOutButton');
-const checkInStatus = document.getElementById('checkInStatus');
-let isCheckedIn = false;
+document.addEventListener("DOMContentLoaded", function () {
+    const checkInOutButton = document.getElementById("checkInOutButton");
+    const checkInStatus = document.getElementById("checkInStatus");
 
-checkInOutButton.addEventListener('click', () => {
-    if (isCheckedIn) {
-        checkInOutButton.innerHTML = '<i class="fas fa-clock"></i>Check In';
-        checkInStatus.textContent = 'You are currently checked out.';
-        isCheckedIn = false;
-    } else {
-        checkInOutButton.innerHTML = '<i class="fas fa-clock"></i>Check Out';
-        checkInStatus.textContent = 'You checked in at ' + new Date().toLocaleTimeString();
-        isCheckedIn = true;
-    }
-});
+    checkInOutButton.addEventListener("click", function () {
+        const action = checkInOutButton.getAttribute("data-action");
 
-// Chart.js for Monthly Attendance Summary
-const attendanceBarChart = new Chart(document.getElementById('attendanceBarChart'), {
-    type: 'bar',
-    data: {
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-        datasets: [{
-            label: 'Hours Worked',
-            data: [40, 38, 42, 35],
-            backgroundColor: '#2563eb',
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                max: 50, // Set a fixed maximum value for the y-axis
-                ticks: {
-                    stepSize: 10, // Set step size for y-axis ticks
+        fetch("/employees/attendance", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `action=${action}`,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (action === "checkin") {
+                    checkInOutButton.innerHTML = '<i class="fas fa-clock"></i> Check Out';
+                    checkInOutButton.setAttribute("data-action", "checkout");
+                    checkInStatus.textContent = "You are currently checked in.";
+                } else {
+                    checkInOutButton.innerHTML = '<i class="fas fa-clock"></i> Check In';
+                    checkInOutButton.setAttribute("data-action", "checkin");
+                    checkInStatus.textContent = "You are currently checked out.";
                 }
+            } else {
+                alert(data.message);
             }
-        }
-    }
+        })
+        .catch(error => console.error("Error:", error));
+    });
 });

@@ -42,8 +42,8 @@
 
 <!-- Quick Actions -->
 <div class="quick-actions">
-    <button><i class="fas fa-clock"></i> Check In/Out</button>
-    <button><i class="fas fa-calendar-plus"></i> Request Leave</button>
+    <a href="{{ url_for('employee.employee_attendance') }}"><button><i class="fas fa-clock"></i> Check In/Out</button></a>
+    <a href="{{ url_for('employee.employee_leave_request') }}"><button><i class="fas fa-calendar-plus"></i> Request Leave</button></a>
     <button><i class="fas fa-file-invoice"></i> View Payslip</button>
     <button><i class="fas fa-user-edit"></i> Update Profile</button>
 </div>

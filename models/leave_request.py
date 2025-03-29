@@ -2,7 +2,7 @@
 from models.base_model import BaseModel, Base
 import models
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, DateTime, ForeignKey, Integer
+from sqlalchemy import Column, String, DateTime, Text, ForeignKey, Integer
 
 
 class LeaveRequest(BaseModel, Base):
@@ -17,6 +17,9 @@ class LeaveRequest(BaseModel, Base):
         leave_balance = Column(Integer, nullable=False, default=30)
         status = Column(String(50), nullable=False, default='pending')
         approval_manager_id = Column(String(60), ForeignKey('employees.id'))
+        reason = Column(Text, nullable=False)  # Added reason column
+        document = Column(String(255), nullable=True)  # Added document column
+
 
         employee = relationship("Employee", back_populates='leave_requests', foreign_keys=[employee_id])
         approval_manager = relationship("Employee", foreign_keys=[approval_manager_id])
@@ -28,6 +31,8 @@ class LeaveRequest(BaseModel, Base):
         employee_id = ""
         status = ""
         approval_manager_id = ""
+        reason = ""
+        document = ""
 
     def __init__(self, *args, **kwargs):
         """Initializes the leaverequest """

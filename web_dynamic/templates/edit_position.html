@@ -1,0 +1,24 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Edit Position | EMS{% endblock %}
+{% block header %}Edit Position | EMS{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Position</h2>
+    <form action="{{ url_for('admin.edit_position', position_id=position.id) }}" method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label">Position Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ position.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="department_id" class="form-label">Department</label>
+            <select class="form-control" id="department_id" name="department_id" required>
+                {% for department in departments %}
+                <option value="{{ department.id }}" {% if position.department_id == department.id %}selected{% endif %}>{{ department.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Update Position</button>
+    </form>
+</div>
+{% endblock %}

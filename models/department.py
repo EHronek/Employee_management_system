@@ -19,7 +19,7 @@ class Department(BaseModel, Base):
         total_employees = Column(Integer, default=0, nullable=True)
 
         employees = relationship("Employee", back_populates="department", foreign_keys=[Employee.department_id])
-
+        #positions =  relationship("Position", back_populates='department')
 
     else:
         name = ""

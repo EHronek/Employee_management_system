@@ -156,8 +156,8 @@
         <div class="nav-content">
             <div class="logo">EMS PRO</div>
             <div class="nav-links">
-                <a href="http://0.0.0.0:5001/admin/dashboard">Admin</a>
-                <a href="http://127.0.0.1:5001/employees/dashboard">Employee</a>
+                <a href="{{ url_for('admin.admin_dashboard') }}">Admin</a>
+                <a href="{{ url_for('admin.employee_dashboard') }}">Employee</a>
                 <a href="http://0.0.0.0:5001/login">Login</a>
                 <a href="#demo">Demo</a>
             </div>
@@ -168,7 +168,7 @@
     <section class="hero">
         <h1>Transform Your HR Operations</h1>
         <p>The all-in-one platform for seamless employee management, attendance tracking, and HR automation</p>
-        <a href="#" class="cta-button">Start Free Trial</a>
+        <a href="{{ url_for('create_user') }}" class="cta-button">Start Free Trial</a>
     </section>
 
     <!-- Features Section -->

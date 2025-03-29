@@ -16,7 +16,7 @@ class User(BaseModel, Base):
         username = Column(String(128), unique=True, nullable=False)
         password = Column(String(256), nullable=False)
         role = Column(String(50), nullable=False)
-        employee_id = Column(String(60), ForeignKey('employees.id'), nullable=False)
+        employee_id = Column(String(60), ForeignKey('employees.id'), nullable=True)
         status = Column(String(20), nullable=False, default='active')
 
         employee = relationship("Employee")

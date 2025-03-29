@@ -1,0 +1,49 @@
+{% extends "admin_base_layout.html" %}
+{% block title %}Position Dashboard | EMS{% endblock %}
+{% block header %}Position Dashboard | EMS{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Position Dashboard</h2>
+        <a href="{{ url_for('admin.add_position') }}" class="btn btn-primary">Add Position</a>
+    </div>
+    
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Position Name</th>
+                <th>Department</th>
+                <th>Employees</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for position in positions %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ position.title }}</td>
+                <td>{{ position.department }}</td>
+                <td>
+                    {% if position.employees %}
+                        <ul>
+                            {% for employee in position.employees %}
+                                <li>{{ employee.name }} ({{ employee.email }})</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        No employees assigned
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.edit_position', position_id=position.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ url_for('admin.delete_position', position_id=position.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this position?');">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+{% endblock %}

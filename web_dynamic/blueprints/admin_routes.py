@@ -435,13 +435,13 @@ def create_user():
         storage.new(new_user)
         storage.save()
         flash('User created successfully', 'success')
-        return redirect(url_for('admin.admin_dashboard'))
+        # return redirect(url_for('admin.admin_dashboard'))
 
     
     return render_template('create_user.html', employees=employees)
 
 
-@admin_bp.route("/edit_user<string:user_id>", methods=["GET"], strict_slashes=False)
+@admin_bp.route("/edit_user<string:user_id>", methods=["GET", "POST"], strict_slashes=False)
 @role_required(["admin", "hr", "system admin"])
 def edit_user(user_id):
     """edits an existing user data"""
@@ -456,18 +456,32 @@ def edit_user(user_id):
         employee_id = request.form.get('employee_id')
         status = request.form.get('status')
 
-        if not all([username, role, employee_id, status]):
-            flash("All fields are required", "danger")
-            return redirect(url_for('edit_user', user_id=user_id))
-        
+        if storage.find(User, username):
+            flash("username already exists, try a different username", "error")
+            return redirect(url_for('admin.edit_user', user_id=user_id))
+
+        if user.employee_id:
+            if not all([username, role, employee_id, status]):
+                flash("All fields are required", "danger")
+                return redirect(url_for('admin.edit_user', user_id=user_id))
+            
+                user.username = username
+                user.role = role
+                user.employee_id = employee_id
+                user.status = status
+                storage.save()
+                flash("user updated successfully", "success")
+                return redirect(url_for("admin.admin_dashboard"))
+
         user.username = username
         user.role = role
-        user.employee_id = employee_id
+        #user.employee_id = employee_id
         user.status = status
         storage.save()
         flash("user updated successfully", "success")
-        return redirect(url_for("admin.admin_dashboard"))
-    
+        # return redirect(url_for("admin.admin_dashboard"))
+
+        
     employees = storage.all(Employee).values()
     return render_template('edit_user.html', user=user, employees=employees)
 
@@ -481,7 +495,7 @@ def list_users():
 @admin_bp.route('/delete_user/<string:user_id>', methods=['POST'])
 def delete_user(user_id):
     """Handles deleting a user"""
-    user = User.query.get(user_id)
+    user = storage.get(User, user_id)
     if user:
         storage.delete(user)
         storage.save()
@@ -489,6 +503,101 @@ def delete_user(user_id):
     else:
         flash("User not found", "error")
     return redirect(url_for('admin.list_users'))
+
+
+""" @admin_bp.route("/position")
+def position_dashboard():
+    positions = Position.query.all()
+    
+    # Fetch departments with their IDs
+    departments = {dept.id: dept.name for dept in Department.query.all()}
+
+    # Prepare positions data with employees and departments
+    positions_data = []
+    for position in positions:
+        position_info = {
+            "id": position.id,
+            "title": position.title,
+            "department": departments.get(position.department_id, "No department"),
+            "employees": [{"name": f"{emp.first_name} {emp.last_name}", "email": emp.work_email} for emp in position.employees]
+        }
+        positions_data.append(position_info)
+
+    return render_template('position_dashboard.html', positions=positions_data)
+ """
+# Add Position - Render Form & Handle Submission
+# Add Position - Render Form & Handle Submission
+@admin_bp.route("/position/add", methods=["GET", "POST"])
+def add_position():
+    departments = storage.all(Department).values()
+    if request.method == "POST":
+        title = request.form.get("title")
+        #department_id = request.form.get("department_id")
+        salary_range_min = request.form.get("salary_range_min")
+        salary_range_max = request.form.get("salary_range_max")
+        job_description = request.form.get("job_description")
+
+        # Validate required fields
+        if not title  or not salary_range_min or not salary_range_max or not job_description:
+            flash("All fields are required.", "danger")
+            return redirect(url_for("admin.add_position"))
+
+        try:
+            salary_range_min = float(salary_range_min)
+            salary_range_max = float(salary_range_max)
+
+            # Validate salary range
+            if salary_range_min > salary_range_max:
+                flash("Minimum salary cannot be greater than maximum salary.", "danger")
+                return redirect(url_for("admin.add_position"))
+
+            # Create new Position object
+            new_position = Position(
+                title=title,
+                salary_range_min=salary_range_min,
+                salary_range_max=salary_range_max,
+                job_description=job_description
+            )
+
+            storage.new(new_position)
+            storage.save()
+
+            flash("Position added successfully!", "success")
+            return redirect(url_for("admin.position_dashboard"))
+
+        except ValueError:
+            flash("Invalid salary input. Please enter valid numbers.", "danger")
+            return redirect(url_for("admin.add_position"))
+
+        except Exception as e:
+            flash(f"An error occurred: {str(e)}", "danger")
+            return redirect(url_for("admin.add_position"))
+
+    return render_template("add_position.html")
+
+
+# Edit Position - Render Form & Handle Submission
+@admin_bp.route("/postion/edit/<string:position_id>", methods=["GET", "POST"])
+def edit_position(position_id):
+    position = Position.query.get_or_404(position_id)  # Fetch position by ID
+
+    if request.method == "POST":
+        title = request.form.get("title")
+        department_id = request.form.get("department_id")
+
+        if not title or not department_id:
+            flash("All fields are required.", "danger")
+            return redirect(url_for("position.edit_position", position_id=position.id))
+
+        # Update position fields
+        position.title = title
+        position.department_id = department_id
+        position.save()
+
+        flash("Position updated successfully!", "success")
+        return redirect(url_for("position.position_dashboard"))
+
+    return render_template("edit_position.html", position=position)
 
 
 
